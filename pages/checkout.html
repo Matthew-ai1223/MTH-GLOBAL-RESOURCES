@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | MTH GLOBAL RESOURCES</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .checkout-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 2rem;
+      margin: 2rem 0 4rem;
+      align-items: start;
+    }
+
+    .checkout-section {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .checkout-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .checkout-section h2 i {
+      color: var(--secondary);
+    }
+
+    .address-card {
+      background: var(--bg-alt);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .address-card strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .address-card p {
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    .summary-sidebar {
+      position: sticky;
+      top: 100px;
+    }
+
+    .summary-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--bg-alt);
+    }
+
+    .summary-item img {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+    }
+
+    .summary-item-info {
+      flex: 1;
+    }
+
+    .summary-item-info h4 {
+      margin: 0 0 0.25rem;
+      font-size: 0.95rem;
+    }
+
+    .summary-item-info p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      font-weight: 600;
+    }
+
+    .payment-option {
+      background: var(--bg-alt);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: var(--transition);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      position: relative;
+    }
+
+    .payment-option:hover {
+      border-color: var(--primary);
+      background: rgba(30, 58, 138, 0.02);
+    }
+
+    .payment-option.active {
+      border-color: var(--primary);
+      background: rgba(30, 58, 138, 0.05);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .payment-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--primary);
+    }
+
+    .payment-option img {
+      height: 24px;
+    }
+
+    .payment-option-info strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .payment-option-info p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .payment-option-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--secondary);
+      color: var(--primary-dark);
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .header-banner {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      padding: 3rem 2rem;
+      border-radius: var(--radius-lg);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-icon {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      backdrop-filter: blur(4px);
+    }
+
+    @media (max-width: 992px) {
+      .checkout-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="layout"></div>
+
+  <main class="container">
+    <div class="header-banner">
+      <div class="header-icon">
+        <i class="fa-solid fa-shield-check"></i>
+      </div>
+      <div>
+        <h1 style="margin: 0; font-family: 'Playfair Display', serif;">Secure Checkout</h1>
+        <p style="margin: 0.5rem 0 0; color: rgba(255,255,255,0.8);">Confirm your order and proceed to secure payment.
+        </p>
+      </div>
+    </div>
+
+    <div class="checkout-layout">
+      <!-- Left Column: Details -->
+      <div class="checkout-details">
+        <div class="checkout-section">
+          <h2><i class="fa-solid fa-location-dot"></i> Delivery Address</h2>
+          <div id="address-container">
+            <div class="loading-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Fetching address...</div>
+          </div>
+        </div>
+
+        <div class="checkout-section">
+          <h2><i class="fa-solid fa-credit-card"></i> Payment Method</h2>
+
+          <label class="payment-option active" for="pay-online">
+            <input type="radio" name="payment_method" id="pay-online" value="online" checked>
+            <div class="payment-option-info">
+              <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+                <strong>Pay Online Now</strong>
+                <img src="https://paystack.com/assets/img/login/paystack-logo.png" alt="Paystack">
+              </div>
+              <p>Card, Bank Transfer, USSD, or QR Code (Secured by Paystack)</p>
+            </div>
+            <span class="payment-option-badge">Fastest</span>
+          </label>
+
+          <label class="payment-option" for="pay-delivery">
+            <input type="radio" name="payment_method" id="pay-delivery" value="pod">
+            <div class="payment-option-info">
+              <strong>Pay on Delivery (POD)</strong>
+              <p>Pay with Cash or Transfer when your order arrives.</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Right Column: Summary -->
+      <div class="summary-sidebar">
+        <div class="checkout-section">
+          <h2>Order Summary</h2>
+          <div id="item-list">
+            <div class="loading-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading cart...</div>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <div class="total-row">
+              <span>Subtotal</span>
+              <span id="subtotal">₦0.00</span>
+            </div>
+            <div class="total-row">
+              <span>Delivery Fee</span>
+              <span style="color: var(--secondary); font-weight: 700;">FREE</span>
+            </div>
+            <div class="grand-total"
+              style="display: flex; justify-content: space-between; padding: 1.5rem 0; border-top: 2px solid var(--border-color); font-size: 1.5rem; font-weight: 800; color: var(--primary-dark);">
+              <span>Total</span>
+              <span id="grand-total">₦0.00</span>
+            </div>
+          </div>
+
+          <button id="payNowBtn" class="btn btn-primary"
+            style="width: 100%; padding: 1.25rem; font-size: 1.1rem; border-radius: var(--radius-md);">
+            Confirm Order <i class="fa-solid fa-arrow-right" style="margin-left: 0.5rem;"></i>
+          </button>
+
+          <p style="text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+            By clicking "Confirm Order", you agree to our terms and conditions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/api-client.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script src="../assets/js/pages/common.js"></script>
+  <script>
+    mountLayout();
+
+    async function initCheckout() {
+      const addressContainer = document.getElementById('address-container');
+      const itemList = document.getElementById('item-list');
+      const payBtn = document.getElementById('payNowBtn');
+
+      // UI Interactivity
+      document.querySelectorAll('.payment-option').forEach(opt => {
+        opt.onclick = () => {
+          document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+          opt.classList.add('active');
+          const radio = opt.querySelector('input');
+          radio.checked = true;
+
+          // Update button text
+          if (radio.value === 'online') {
+            payBtn.innerHTML = 'Confirm & Pay Now <i class="fa-solid fa-lock" style="margin-left: 0.5rem;"></i>';
+          } else {
+            payBtn.innerHTML = 'Confirm Order (POD) <i class="fa-solid fa-truck" style="margin-left: 0.5rem;"></i>';
+          }
+        };
+      });
+
+      try {
+        const me = await authRequired();
+        if (!me) return;
+
+        // 1. Render Address
+        addressContainer.innerHTML = `
+          <div class="address-card">
+            <strong>${me.name}</strong>
+            <p><i class="fa-solid fa-envelope"></i> ${me.email}</p>
+            <p><i class="fa-solid fa-location-dot"></i> ${me.address || 'No address set in profile.'}</p>
+            <a href="customer/profile.html" style="position: absolute; top: 1.5rem; right: 1.5rem; color: var(--secondary); font-size: 0.875rem; font-weight: 600;">Edit</a>
+          </div>
+        `;
+
+        // Check if address is missing
+        if (!me.address) {
+          toast("Please add a delivery address to your profile first.", "warning");
+        }
+
+        // 2. Render Cart Items
+        const items = await api("cart.list");
+        if (items.length === 0) {
+          window.location.href = "shop.html";
+          return;
+        }
+
+        let total = 0;
+        itemList.innerHTML = items.map(item => {
+          const itemTotal = item.price * item.quantity;
+          total += itemTotal;
+          return `
+            <div class="summary-item">
+              <img src="${getProductImageUrl(item.image_url)}" alt="${item.name}">
+              <div class="summary-item-info">
+                <h4>${item.name}</h4>
+                <p>Qty: ${item.quantity} | ₦${Number(item.price).toLocaleString()}</p>
+              </div>
+              <div style="font-weight: 600;">₦${itemTotal.toLocaleString()}</div>
+            </div>
+          `;
+        }).join('');
+
+        document.getElementById('subtotal').textContent = `₦${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        document.getElementById('grand-total').textContent = `₦${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+
+        // 3. Set up Order placement
+        payBtn.onclick = async () => {
+          const method = document.querySelector('input[name="payment_method"]:checked').value;
+
+          if (!me.address) {
+            toast("Please set your delivery address in your profile before ordering.", "error");
+            return;
+          }
+
+          payBtn.disabled = true;
+          payBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+
+          try {
+            // Create the order
+            const order = await api("orders.checkout", "POST", { payment_method: method });
+
+            if (method === 'online') {
+              // Online Payment flow
+              const payment = await api("payments.initialize", "POST", { order_id: order.order_id });
+              toast("Redirecting to secure payment gateway...", "info");
+              setTimeout(() => {
+                window.location.href = payment.authorization_url;
+              }, 1000);
+            } else {
+              // Pay on Delivery flow
+              toast("Order placed successfully! Redirecting...", "success");
+              setTimeout(() => {
+                window.location.href = "customer/orders.html";
+              }, 1500);
+            }
+
+          } catch (e) {
+            toast(e.message, "error");
+            payBtn.disabled = false;
+            payBtn.innerHTML = method === 'online' ? 'Confirm & Pay Now' : 'Confirm Order (POD)';
+          }
+        };
+
+      } catch (e) {
+        console.error(e);
+        if (addressContainer) addressContainer.innerHTML = `<p style="color:red;">Error loading checkout details.</p>`;
+        if (itemList) itemList.innerHTML = `<p style="color:red;">${e.message}</p>`;
+      }
+    }
+
+    initCheckout();
+  </script>
+</body>
+
+</html>

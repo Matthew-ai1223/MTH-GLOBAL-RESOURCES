@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance | MTH GLOBAL RESOURCES Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .header-banner { background: linear-gradient(135deg,var(--primary-dark),var(--primary)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; color:white; display:flex; align-items:center; justify-content:space-between; }
+    .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+    .kpi { background:var(--bg-card); padding:1.5rem; border-radius:var(--radius-lg); border-left:4px solid var(--primary); box-shadow:var(--shadow-sm); }
+    .kpi small { font-size:.75rem; text-transform:uppercase; color:var(--text-muted); letter-spacing:.05em; }
+    .kpi .val { font-size:1.75rem; font-weight:800; color:var(--primary-dark); }
+    .tabs { display:flex; gap:.5rem; margin-bottom:1.5rem; }
+    .tab { padding:.6rem 1.25rem; border-radius:var(--radius-md); cursor:pointer; font-weight:600; font-size:.9rem; border:1px solid var(--border-color); background:var(--bg-alt); color:var(--text-muted); }
+    .tab.active { background:var(--primary); color:white; border-color:var(--primary); }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--bg-card); border-radius:var(--radius-lg); padding:2rem; width:90%; max-width:480px; box-shadow:var(--shadow-lg); }
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:.875rem; font-weight:600; margin-bottom:.4rem; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:.7rem 1rem; border:1px solid var(--border-color); border-radius:var(--radius-md); font-family:'Inter',sans-serif; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;color:white;">Finance Overview</h1>
+        <p style="margin:.5rem 0 0;opacity:.9;">Track distribution income and operational expenses.</p>
+      </div>
+      <i class="fa-solid fa-money-bill-trend-up" style="font-size:3rem;opacity:.2;"></i>
+    </div>
+
+    <div class="summary-grid" id="summary">
+      <div class="kpi"><small>Total Income</small><div class="val" id="total-income">—</div></div>
+      <div class="kpi" style="border-left-color:#ef4444;"><small>Total Expenses</small><div class="val" id="total-expense" style="color:#b91c1c;">—</div></div>
+      <div class="kpi" style="border-left-color:#047857;"><small>Net Profit</small><div class="val" id="net-profit" style="color:#047857;">—</div></div>
+    </div>
+
+    <section class="card">
+      <div class="tabs">
+        <div class="tab active" id="tab-expenses" onclick="switchTab('expenses')"><i class="fa-solid fa-arrow-trend-down"></i> Expenses</div>
+        <div class="tab" id="tab-income" onclick="switchTab('income')"><i class="fa-solid fa-arrow-trend-up"></i> Income</div>
+      </div>
+      <div class="toolbar" style="justify-content:flex-end;margin-bottom:1rem;">
+        <button class="btn btn-primary btn-small" id="add-btn" onclick="openModal()"><i class="fa-solid fa-plus"></i> <span id="add-label">Add Expense</span></button>
+      </div>
+      <div id="finance-container">
+        <div style="text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3 style="margin:0;" id="modal-title">Add Expense</h3>
+        <button onclick="closeModal()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group"><label>Title</label><input type="text" id="f-title" placeholder="e.g. Bottle procurement"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Amount (₦)</label><input type="number" id="f-amount" placeholder="0.00"></div>
+        <div class="form-group"><label>Date</label><input type="date" id="f-date"></div>
+      </div>
+      <div class="form-group"><label id="cat-label">Category</label><input type="text" id="f-cat" placeholder="e.g. Supplies"></div>
+      <div class="form-group"><label>Note (optional)</label><textarea id="f-note" rows="2"></textarea></div>
+      <div style="display:flex;gap:1rem;margin-top:1rem;">
+        <button class="btn btn-primary" onclick="saveEntry()" style="flex:2;">Save</button>
+        <button class="btn secondary" onclick="closeModal()" style="flex:1;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/admin-layout.js"></script>
+  <script>
+    mountAdminLayout();
+    let activeTab = 'expenses';
+    authRequired().then(() => { loadSummary(); load(); });
+
+    async function loadSummary() {
+      try {
+        const [expenses, income] = await Promise.all([api("finance.expenses.list"), api("finance.income.list")]);
+        const totalExp = expenses.reduce((s, e) => s + Number(e.amount), 0);
+        const totalInc = income.reduce((s, e) => s + Number(e.amount), 0);
+        const net = totalInc - totalExp;
+        const fmt = v => '₦' + Number(v).toLocaleString('en-NG', {minimumFractionDigits:2});
+        document.getElementById('total-income').textContent = fmt(totalInc);
+        document.getElementById('total-expense').textContent = fmt(totalExp);
+        document.getElementById('net-profit').textContent = fmt(net);
+        if (net < 0) document.getElementById('net-profit').style.color = '#b91c1c';
+      } catch(e) { console.error(e); }
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById('tab-expenses').classList.toggle('active', tab === 'expenses');
+      document.getElementById('tab-income').classList.toggle('active', tab === 'income');
+      document.getElementById('add-label').textContent = tab === 'expenses' ? 'Add Expense' : 'Add Income';
+      document.getElementById('modal-title').textContent = tab === 'expenses' ? 'Add Expense' : 'Add Income';
+      document.getElementById('cat-label').textContent = tab === 'expenses' ? 'Category' : 'Source';
+      load();
+    }
+
+    async function load() {
+      const container = document.getElementById('finance-container');
+      container.innerHTML = '<div style="text-align:center;padding:2rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:1.5rem;color:var(--primary);"></i></div>';
+      try {
+        const rows = activeTab === 'expenses' ? await api("finance.expenses.list") : await api("finance.income.list");
+        if (!rows.length) { container.innerHTML = `<p style="text-align:center;color:var(--text-muted);padding:2rem;">No ${activeTab} recorded yet.</p>`; return; }
+        const dateField = activeTab === 'expenses' ? 'expense_date' : 'income_date';
+        const catField = activeTab === 'expenses' ? 'category' : 'source';
+        container.innerHTML = `<div class="table-responsive"><table>
+          <thead><tr><th>Title</th><th>${activeTab==='expenses'?'Category':'Source'}</th><th>Amount</th><th>Date</th><th>Note</th></tr></thead>
+          <tbody>${rows.map(r => `<tr>
+            <td><strong>${r.title}</strong></td>
+            <td>${r[catField]}</td>
+            <td style="font-weight:700;color:${activeTab==='expenses'?'#b91c1c':'#047857'};">${activeTab==='expenses'?'-':'+'} ₦${Number(r.amount).toLocaleString('en-NG',{minimumFractionDigits:2})}</td>
+            <td>${r[dateField] ? new Date(r[dateField]).toLocaleDateString() : '—'}</td>
+            <td>${r.note||'—'}</td>
+          </tr>`).join('')}</tbody>
+        </table></div>`;
+      } catch(e) { container.innerHTML = `<p style="color:red;text-align:center;">Error: ${e.message}</p>`; }
+    }
+
+    function openModal() { document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    async function saveEntry() {
+      const title = document.getElementById('f-title').value.trim();
+      const amount = parseFloat(document.getElementById('f-amount').value) || 0;
+      const date = document.getElementById('f-date').value;
+      const cat = document.getElementById('f-cat').value.trim() || 'General';
+      const note = document.getElementById('f-note').value.trim();
+      if (!title || !amount) { toast('Title and amount are required.'); return; }
+      try {
+        if (activeTab === 'expenses') {
+          await api("finance.expenses.create", "POST", {title, amount, expense_date: date, category: cat, note});
+        } else {
+          await api("finance.income.create", "POST", {title, amount, income_date: date, source: cat, note});
+        }
+        closeModal(); loadSummary(); load();
+      } catch(e) { toast("Error: " + e.message); }
+    }
+  </script>
+</body>
+</html>

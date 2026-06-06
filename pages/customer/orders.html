@@ -1,0 +1,1127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | MTH GLOBAL RESOURCES</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    /* Hero Banner — matches dashboard welcome banner */
+    .orders-banner {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 180px;
+    }
+
+    .orders-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+      z-index: 1;
+    }
+
+    .orders-banner::after {
+      content: '\f466'; /* box-open icon */
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: -5%;
+      top: 50%;
+      transform: translateY(-50%) rotate(-10deg);
+      font-size: 14rem;
+      color: rgba(255, 255, 255, 0.05);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .orders-banner-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .orders-banner h1 {
+      color: white;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .orders-banner p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Stat Cards Row */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--accent);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-info h3 {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0 0 0.35rem 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-info p {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+    
+    /* Amazon/Jumia Style Order Cards */
+    .order-card {
+      background: var(--bg-card);
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .order-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--primary-light);
+    }
+    .order-header {
+      background: var(--bg-alt);
+      padding: 1.25rem 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.875rem;
+    }
+    .order-header-item span {
+      display: block;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.5px;
+    }
+    .order-header-item strong {
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .order-body {
+      padding: 1.5rem;
+    }
+    .order-status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--border-color);
+    }
+    .order-status-row h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    
+    .order-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .order-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      transition: transform 0.2s ease;
+    }
+    .order-item:hover {
+      transform: translateX(4px);
+    }
+    .order-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-md);
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .order-item-info {
+      flex: 1;
+    }
+    .order-item-info h4 {
+      margin: 0 0 0.25rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .order-item-info p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    
+    .order-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-card);
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .badge-Pending { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .badge-Processing { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .badge-Shipped { background: #f5f3ff; color: #5b21b6; border: 1px solid #ddd6fe; }
+    .badge-Delivered { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .badge-Cancelled { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-Paid { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .badge-pod { background: #fdf2f8; color: #9d174d; border: 1px solid #fbcfe8; }
+    .payment-method-tag { font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; margin-top: 0.25rem; }
+    
+    @media (max-width: 768px) {
+      .orders-banner {
+        padding: 2rem 1.5rem;
+        min-height: 140px;
+        margin-bottom: 1.5rem;
+      }
+
+      .orders-banner h1 {
+        font-size: 1.75rem;
+      }
+
+      .orders-banner p {
+        font-size: 0.95rem;
+      }
+
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .stat-info p {
+        font-size: 1.25rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .orders-banner::after {
+        display: none;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat-info h3 {
+        font-size: 0.7rem;
+      }
+
+      .stat-info p {
+        font-size: 1.1rem;
+      }
+
+      .order-header {
+        grid-template-columns: 1fr 1fr;
+        padding: 1rem;
+      }
+
+      .order-body {
+        padding: 1rem;
+      }
+
+      .order-item img {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    /* Tracking Modal CSS */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1.5rem;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow: hidden;
+    }
+    .modal-overlay.active .modal-card {
+      transform: translateY(0) scale(1);
+    }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-alt);
+    }
+    .modal-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover {
+      background: rgba(0,0,0,0.05);
+      color: var(--text-main);
+    }
+    .modal-body {
+      padding: 1.5rem 1.75rem;
+    }
+    
+    /* Tracking Stepper CSS */
+    .tracking-timeline {
+      position: relative;
+      margin: 1.5rem 0 1rem 0;
+      padding-left: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.25rem;
+    }
+    .tracking-step {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .tracking-node {
+      position: absolute;
+      left: -2.5rem;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 3px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      z-index: 2;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tracking-step.active .tracking-node {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 0 0 5px rgba(30, 58, 138, 0.15);
+    }
+    .tracking-step.completed .tracking-node {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+    
+    /* Segment line using pseudo-element */
+    .tracking-step::after {
+      content: '';
+      position: absolute;
+      left: -1.6rem; /* perfectly centered relative to node */
+      top: 2rem;
+      bottom: -2.25rem;
+      width: 3px;
+      background: var(--border-color);
+      z-index: 1;
+      transition: background 0.3s ease;
+    }
+    .tracking-step:last-child::after {
+      display: none;
+    }
+    .tracking-step.completed::after {
+      background: var(--primary);
+    }
+    
+    .tracking-info h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .tracking-step.active .tracking-info h4 {
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+    .tracking-info p {
+      margin: 0;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+    
+    .tracking-summary {
+      background: var(--bg-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .tracking-summary-item span {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.15rem;
+    }
+    .tracking-summary-item strong {
+      font-size: 0.875rem;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+
+  <main class="container">
+    <!-- Hero Banner -->
+    <div class="orders-banner">
+      <div class="orders-banner-content">
+        <h1><i class="fa-solid fa-boxes-packing" style="font-size: 2rem; margin-right: 0.5rem;"></i> My Orders</h1>
+        <p>Manage your purchases, track delivery progress, and view invoices.</p>
+      </div>
+    </div>
+
+    <!-- Order Stats -->
+    <div class="stat-grid" id="order-stats">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Orders</h3>
+          <p id="stat-orders">0</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(132, 204, 22, 0.15); color: var(--accent);">
+          <i class="fa-solid fa-boxes-stacked"></i>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>In Delivery</h3>
+          <p id="stat-delivery">0</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(14, 165, 233, 0.15); color: #0ea5e9;">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Pending Pay</h3>
+          <p id="stat-pending">0</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Spent</h3>
+          <p id="stat-spent">&#8358;0.00</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+      </div>
+    </div>
+
+    <div id="orders-container">
+      <div class="loading-state" style="text-align: center; padding: 4rem;">
+        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2.5rem; color: var(--primary);"></i>
+        <p style="margin-top: 1.5rem; color: var(--text-muted); font-weight: 500;">Retrieving your order history...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Tracking Modal Overlay -->
+  <div id="tracking-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="fa-solid fa-route"></i> Track Order</h2>
+        <button class="modal-close" onclick="closeTrackingModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="tracking-modal-content">
+        <!-- Dynamic Content -->
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/layout.js"></script>
+  <script src="../../assets/js/pages/common.js"></script>
+  <script>
+    mountLayout();
+
+    function fmtNaira(val) {
+      return '\u20A6' + Number(val).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    
+    async function initOrders() {
+      const me = await authRequired();
+      if (!me) return;
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const reference = urlParams.get('verified');
+      if (reference) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+        toast("Verifying your payment...", "info");
+        try {
+          await api("payments.verify", "POST", { reference });
+          toast("Payment successful! Your order is being processed.", "success");
+        } catch (e) {
+          toast(e.message, "error");
+        }
+      }
+
+      const container = document.getElementById('orders-container');
+
+      try {
+        const orders = await api("orders.list");
+        
+        // Calculate statistics dynamically
+        const totalOrders = orders.length;
+        const inDelivery = orders.filter(o => o.status === 'Processing' || o.status === 'Shipped').length;
+        const pendingPay = orders.filter(o => o.payment_status !== 'Paid' && o.status !== 'Cancelled').length;
+        const totalSpent = orders.reduce((sum, o) => sum + Number(o.total_amount), 0);
+
+        document.getElementById('stat-orders').textContent = totalOrders;
+        document.getElementById('stat-delivery').textContent = inDelivery;
+        document.getElementById('stat-pending').textContent = pendingPay;
+        document.getElementById('stat-spent').textContent = fmtNaira(totalSpent);
+        
+        if (orders.length === 0) {
+          container.innerHTML = `
+            <div class="card" style="text-align: center; padding: 5rem 2rem;">
+              <div style="background: var(--bg-alt); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                <i class="fa-solid fa-bag-shopping" style="font-size: 2.5rem; color: var(--text-muted);"></i>
+              </div>
+              <h2 style="margin-bottom: 0.5rem;">No orders found</h2>
+              <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                Looks like you haven't placed any orders yet. Explore our refreshing beverages and start shopping!
+              </p>
+              <a href="../shop.html" class="btn btn-primary">Start Shopping</a>
+            </div>
+          `;
+          return;
+        }
+
+        // Fetch details for each order to show items
+        window.loadedOrders = {};
+        const orderCards = await Promise.all(orders.map(async (o) => {
+          try {
+            const details = await api(`orders.details&id=${o.id}`);
+            window.loadedOrders[o.id] = details;
+            return renderOrderCard(details);
+          } catch (e) {
+            window.loadedOrders[o.id] = o;
+            return renderOrderCard(o); // Fallback to basic if details fail
+          }
+        }));
+
+        container.innerHTML = orderCards.join('');
+
+      } catch (err) {
+        console.error("Failed to load orders", err);
+        container.innerHTML = `
+          <div class="card" style="text-align: center; padding: 3rem;">
+            <i class="fa-solid fa-circle-exclamation" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;"></i>
+            <p style="color: var(--text-muted);">We encountered an error loading your orders. Please try again.</p>
+            <button onclick="initOrders()" class="btn btn-ghost btn-small" style="margin-top: 1rem;">Retry</button>
+          </div>
+        `;
+      }
+    }
+
+    function renderOrderCard(o) {
+      const date = new Date(o.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      const total = fmtNaira(o.total_amount);
+      const isPOD = o.payment_method === 'pod';
+      
+      const itemsHtml = o.items ? o.items.map(item => `
+        <div class="order-item">
+          <img src="${getProductImageUrl(item.image_url)}" alt="${item.name}">
+          <div class="order-item-info">
+            <h4>${item.name}</h4>
+            <p>${item.category} | Qty: ${item.quantity}</p>
+            <p style="font-weight: 600; color: var(--primary);">${fmtNaira(item.unit_price)}</p>
+          </div>
+          <a href="../product-details.html?id=${item.product_id}" class="btn btn-ghost btn-small desktop-only">Buy it again</a>
+        </div>
+      `).join('') : '<p style="color: var(--text-muted);">Details loading...</p>';
+
+      let paymentBadge = '';
+      if (o.payment_status === 'Paid') {
+        paymentBadge = `<span class="badge badge-Paid"><i class="fa-solid fa-check-circle"></i> Paid</span>`;
+      } else if (isPOD) {
+        paymentBadge = `<span class="badge badge-pod"><i class="fa-solid fa-truck-fast"></i> Pay on Delivery</span>`;
+      } else {
+        paymentBadge = `<span class="badge badge-Pending"><i class="fa-solid fa-clock"></i> Payment Pending</span>`;
+      }
+
+      return `
+        <div class="order-card">
+          <div class="order-header">
+            <div class="order-header-item">
+              <span>Order Placed</span>
+              <strong>${date}</strong>
+            </div>
+            <div class="order-header-item">
+              <span>Total</span>
+              <strong>${total}</strong>
+            </div>
+            <div class="order-header-item">
+              <span>Payment Method</span>
+              <div class="payment-method-tag">
+                <i class="fa-solid ${isPOD ? 'fa-truck' : 'fa-credit-card'}"></i>
+                ${isPOD ? 'Pay on Delivery' : 'Online Payment'}
+              </div>
+            </div>
+            <div class="order-header-item" style="text-align: right;">
+              <span>Order # ${o.id}</span>
+              <a href="#" style="color: var(--primary-light); font-weight: 600;">View details</a>
+            </div>
+          </div>
+          <div class="order-body">
+            <div class="order-status-row">
+              <h3>Status: <span class="badge badge-${o.status.replace(' ', '')}">${o.status}</span></h3>
+              <div>
+                ${paymentBadge}
+              </div>
+            </div>
+            <div class="order-items-list">
+              ${itemsHtml}
+            </div>
+          </div>
+          <div class="order-footer">
+            ${o.payment_status !== 'Paid' && o.status !== 'Cancelled' ? 
+              `<button class="btn btn-primary" onclick="payOrder(${o.id})"><i class="fa-solid fa-credit-card"></i> ${isPOD ? 'Pay Online Instead' : 'Pay Now'}</button>` : 
+              ''}
+            <button class="btn btn-ghost" onclick="printInvoice(${o.id})"><i class="fa-solid fa-file-invoice"></i> Invoice</button>
+            <button class="btn btn-ghost" onclick="trackOrder(${o.id})"><i class="fa-solid fa-truck-ramp-box"></i> Track Package</button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function payOrder(id) {
+      try {
+        toast("Initializing secure payment...", "info");
+        const payment = await api("payments.initialize", "POST", { order_id: id });
+        window.location.href = payment.authorization_url;
+      } catch (e) {
+        toast(e.message, "error");
+      }
+    }
+
+    function printInvoice(orderId) {
+      const o = window.loadedOrders[orderId];
+      if (!o) return;
+      
+      const printWindow = window.open('', '_blank', 'width=850,height=900');
+      if (!printWindow) {
+        toast("Please allow popups to print invoices", "error");
+        return;
+      }
+      
+      const dateStr = new Date(o.created_at).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      
+      const itemsHtml = o.items ? o.items.map(item => `
+        <tr>
+          <td>
+            <div class="item-name">${item.name}</div>
+            <div class="item-cat">${item.category}</div>
+          </td>
+          <td style="text-align: center;">${item.quantity}</td>
+          <td style="text-align: right;">${fmtNaira(item.unit_price)}</td>
+          <td style="text-align: right;">${fmtNaira(item.unit_price * item.quantity)}</td>
+        </tr>
+      `).join('') : '<tr><td colspan="4">No item details available</td></tr>';
+
+      const subtotal = o.items ? o.items.reduce((sum, item) => sum + (item.unit_price * item.quantity), 0) : o.total_amount;
+      const total = Number(o.total_amount);
+      
+      let statusClass = 'status-Pending';
+      if (o.payment_status === 'Paid') statusClass = 'status-Paid';
+      if (o.status === 'Cancelled') statusClass = 'status-Cancelled';
+      
+      const invoiceHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Invoice - MTH GLOBAL RESOURCES - Order #${o.id}</title>
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+          <style>
+            body {
+              font-family: 'Inter', sans-serif;
+              color: #1f2937;
+              margin: 0;
+              padding: 40px;
+              line-height: 1.5;
+              background-color: #fff;
+            }
+            .invoice-container {
+              max-width: 800px;
+              margin: 0 auto;
+            }
+            .header {
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              border-bottom: 2px solid #1e3a8a;
+              padding-bottom: 20px;
+              margin-bottom: 30px;
+            }
+            .brand {
+              font-family: 'Playfair Display', serif;
+              font-size: 24px;
+              color: #1e3a8a;
+              font-weight: 700;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+            .brand-sub {
+              font-size: 12px;
+              color: #6b7280;
+              margin-top: 4px;
+              font-family: 'Inter', sans-serif;
+              font-weight: 400;
+            }
+            .invoice-title {
+              text-align: right;
+            }
+            .invoice-title h1 {
+              margin: 0;
+              color: #111827;
+              font-size: 28px;
+              font-weight: 800;
+              letter-spacing: -0.5px;
+            }
+            .invoice-details {
+              margin-top: 8px;
+              font-size: 14px;
+              color: #4b5563;
+            }
+            .meta-grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 40px;
+              margin-bottom: 40px;
+            }
+            .meta-section h3 {
+              font-size: 12px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              color: #6b7280;
+              border-bottom: 1px solid #e5e7eb;
+              padding-bottom: 6px;
+              margin-bottom: 12px;
+              font-weight: 700;
+            }
+            .meta-section p {
+              margin: 0 0 6px 0;
+              font-size: 14px;
+            }
+            .status-badge {
+              display: inline-block;
+              font-size: 11px;
+              font-weight: 700;
+              padding: 4px 8px;
+              border-radius: 4px;
+              text-transform: uppercase;
+            }
+            .status-Paid { background: #d1fae5; color: #047857; }
+            .status-Pending { background: #fef3c7; color: #92400e; }
+            .status-Cancelled { background: #fee2e2; color: #991b1b; }
+            
+            .items-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-bottom: 30px;
+            }
+            .items-table th {
+              background: #f9fafb;
+              border-bottom: 2px solid #e5e7eb;
+              color: #4b5563;
+              font-size: 12px;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+              padding: 12px;
+              text-align: left;
+            }
+            .items-table td {
+              border-bottom: 1px solid #e5e7eb;
+              padding: 14px 12px;
+              font-size: 14px;
+            }
+            .item-name {
+              font-weight: 600;
+              color: #111827;
+            }
+            .item-cat {
+              font-size: 12px;
+              color: #6b7280;
+              margin-top: 2px;
+            }
+            .totals-section {
+              display: flex;
+              justify-content: flex-end;
+              margin-bottom: 40px;
+            }
+            .totals-table {
+              width: 280px;
+              border-collapse: collapse;
+            }
+            .totals-table td {
+              padding: 8px 12px;
+              font-size: 14px;
+            }
+            .totals-table tr.grand-total {
+              border-top: 2px solid #1e3a8a;
+              font-weight: 700;
+              font-size: 16px;
+            }
+            .footer {
+              border-top: 1px solid #e5e7eb;
+              padding-top: 20px;
+              text-align: center;
+              color: #9ca3af;
+              font-size: 12px;
+            }
+            @media print {
+              body {
+                padding: 0;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="invoice-container">
+            <div class="header">
+              <div>
+                <div class="brand">💧 MTH GLOBAL RESOURCES</div>
+                <div class="brand-sub">Premium Water & Beverage Distribution</div>
+                <p style="font-size: 12px; color: #4b5563; margin: 8px 0 0 0; line-height: 1.4;">
+                  Km 12, Lasu-Iba Road, Ojo, Lagos<br>
+                  support@mthglobal.com | +234 800-MTH-GLOBAL
+                </p>
+              </div>
+              <div class="invoice-title">
+                <h1>INVOICE</h1>
+                <div class="invoice-details">
+                  <strong>Invoice #:</strong> INV-${o.id}-${new Date(o.created_at).getFullYear()}<br>
+                  <strong>Date:</strong> ${dateStr}
+                </div>
+              </div>
+            </div>
+
+            <div class="meta-grid">
+              <div class="meta-section">
+                <h3>Billed To</h3>
+                <p><strong>Customer Account Holder</strong></p>
+                <p style="color: #4b5563;">MTH GLOBAL RESOURCES Member</p>
+                <p style="color: #6b7280; font-size: 13px; margin-top: 8px;">Shipping Address: Verified on order checkout.</p>
+              </div>
+              <div class="meta-section">
+                <h3>Payment Details</h3>
+                <p><strong>Payment Method:</strong> ${o.payment_method === 'pod' ? 'Pay on Delivery (POD)' : 'Online Card Payment'}</p>
+                <p style="margin-top: 10px;">
+                  Status: <span class="status-badge ${statusClass}">${o.payment_status}</span>
+                </p>
+              </div>
+            </div>
+
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Product / Description</th>
+                  <th style="text-align: center; width: 80px;">Qty</th>
+                  <th style="text-align: right; width: 120px;">Unit Price</th>
+                  <th style="text-align: right; width: 120px;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemsHtml}
+              </tbody>
+            </table>
+
+            <div class="totals-section">
+              <table class="totals-table">
+                <tr>
+                  <td style="color: #6b7280;">Subtotal</td>
+                  <td style="text-align: right;">${fmtNaira(subtotal)}</td>
+                </tr>
+                <tr>
+                  <td style="color: #6b7280;">Delivery Fee</td>
+                  <td style="text-align: right; color: #10b981; font-weight: 500;">FREE</td>
+                </tr>
+                <tr class="grand-total">
+                  <td>Total</td>
+                  <td style="text-align: right; color: #1e3a8a;">${fmtNaira(total)}</td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="footer">
+              <p>Thank you for ordering from MTH GLOBAL RESOURCES! Pure hydration, quality beverages, delivered to you.</p>
+              <p style="font-size: 10px; margin-top: 10px;">This is a computer generated invoice and requires no physical signature.</p>
+            </div>
+          </div>
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 300);
+            };
+          <\/script>
+        </body>
+        </html>
+      `;
+      
+      printWindow.document.open();
+      printWindow.document.write(invoiceHtml);
+      printWindow.document.close();
+    }
+
+    function trackOrder(orderId) {
+      const o = window.loadedOrders[orderId];
+      if (!o) return;
+
+      const modal = document.getElementById('tracking-modal');
+      const content = document.getElementById('tracking-modal-content');
+      
+      const createdDate = new Date(o.created_at);
+      
+      const estDeliveryDate = new Date(createdDate);
+      estDeliveryDate.setDate(createdDate.getDate() + 3);
+      const formattedEstDelivery = estDeliveryDate.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+      
+      let stepperHtml = '';
+      
+      if (o.status === 'Cancelled') {
+        stepperHtml = `
+          <div style="text-align: center; padding: 2rem 0;">
+            <div style="background: rgba(239, 68, 68, 0.08); width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; border: 1px solid rgba(239, 68, 68, 0.15);">
+              <i class="fa-solid fa-ban" style="font-size: 2rem; color: #ef4444;"></i>
+            </div>
+            <h3 style="color: #991b1b; font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 700;">Order Cancelled</h3>
+            <p style="color: var(--text-muted); max-width: 360px; margin: 0 auto 1.5rem; line-height: 1.5; font-size: 0.875rem;">
+              This order has been cancelled and cannot be tracked further. If you have any questions or want to place a new order, please contact support.
+            </p>
+            <a href="../shop.html" class="btn btn-ghost btn-small">Return to Shop</a>
+          </div>
+        `;
+      } else {
+        const stages = ['Pending', 'Processing', 'Shipped', 'Delivered'];
+        const currentIdx = stages.indexOf(o.status);
+        
+        const stepStates = stages.map((stage, idx) => {
+          if (idx < currentIdx) return 'completed';
+          if (idx === currentIdx) return 'active';
+          return 'pending';
+        });
+        
+        const getDateForStep = (idx) => {
+          const stepDate = new Date(createdDate);
+          stepDate.setDate(createdDate.getDate() + idx);
+          return stepDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        };
+
+        stepperHtml = `
+          <div class="tracking-summary">
+            <div class="tracking-summary-item">
+              <span>Courier Service</span>
+              <strong>MTH Express</strong>
+            </div>
+            <div class="tracking-summary-item" style="text-align: right;">
+              <span>Est. Delivery</span>
+              <strong>${o.status === 'Delivered' ? 'Delivered' : formattedEstDelivery}</strong>
+            </div>
+          </div>
+          
+          <div class="tracking-timeline">
+            <div class="tracking-step ${stepStates[0]}">
+              <div class="tracking-node">
+                <i class="fa-solid fa-receipt"></i>
+              </div>
+              <div class="tracking-info">
+                <h4>Order Placed</h4>
+                <p>Order has been created. Confirmed on ${getDateForStep(0)}</p>
+              </div>
+            </div>
+            
+            <div class="tracking-step ${stepStates[1]}">
+              <div class="tracking-node">
+                <i class="fa-solid fa-boxes-packing"></i>
+              </div>
+              <div class="tracking-info">
+                <h4>Processing</h4>
+                <p>${stepStates[1] === 'completed' ? 'Items packaged on ' + getDateForStep(1) : (stepStates[1] === 'active' ? 'We are currently preparing your fresh items.' : 'Awaiting confirmation')}</p>
+              </div>
+            </div>
+            
+            <div class="tracking-step ${stepStates[2]}">
+              <div class="tracking-node">
+                <i class="fa-solid fa-truck-fast"></i>
+              </div>
+              <div class="tracking-info">
+                <h4>In Transit</h4>
+                <p>${stepStates[2] === 'completed' ? 'Shipped on ' + getDateForStep(2) : (stepStates[2] === 'active' ? 'Out for delivery with MTH Express' : 'Awaiting packing')}</p>
+              </div>
+            </div>
+            
+            <div class="tracking-step ${stepStates[3]}">
+              <div class="tracking-node">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="tracking-info">
+                <h4>Delivered</h4>
+                <p>${stepStates[3] === 'completed' ? 'Delivered to destination on ' + getDateForStep(3) : 'Awaiting carrier dispatch'}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      
+      content.innerHTML = stepperHtml;
+      modal.classList.add('active');
+    }
+
+    function closeTrackingModal() {
+      document.getElementById('tracking-modal').classList.remove('active');
+    }
+
+    initOrders();
+  </script>
+</body>
+</html>

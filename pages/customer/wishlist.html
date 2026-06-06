@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wishlist | MTH GLOBAL RESOURCES</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    /* Hero Banner — matches dashboard welcome banner */
+    .wishlist-banner {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 180px;
+    }
+
+    .wishlist-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+      z-index: 1;
+    }
+
+    .wishlist-banner::after {
+      content: '\f004'; /* heart icon */
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: -5%;
+      top: 50%;
+      transform: translateY(-50%) rotate(-10deg);
+      font-size: 14rem;
+      color: rgba(255, 255, 255, 0.05);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .wishlist-banner-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .wishlist-banner h1 {
+      color: white;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .wishlist-banner p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Stat Cards Row */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--accent);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-info h3 {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0 0 0.35rem 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-info p {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    /* Wishlist Product Cards */
+    .wishlist-card {
+      background: var(--bg-card);
+      border-radius: 1rem;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      padding: 0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .wishlist-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--primary-light);
+    }
+
+    .wishlist-img-wrapper {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .wishlist-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .wishlist-card:hover .wishlist-img {
+      transform: scale(1.08);
+    }
+
+    .wishlist-body {
+      padding: 1.25rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wishlist-category {
+      background: rgba(59, 130, 246, 0.12);
+      color: #1e3a8a;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      width: fit-content;
+    }
+
+    .wishlist-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0 0 0.5rem 0;
+      line-height: 1.4;
+    }
+
+    .wishlist-price {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: auto 0 1.25rem 0;
+    }
+
+    .wishlist-actions {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1.25rem;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-card);
+    }
+
+    .wishlist-actions .btn-add {
+      flex: 1;
+      font-weight: 700;
+      height: 38px;
+      padding: 0 1rem;
+      font-size: 0.9rem;
+    }
+
+    .wishlist-actions .btn-remove {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      border-radius: var(--radius-md);
+      color: #ef4444;
+      cursor: pointer;
+      padding: 0;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .wishlist-actions .btn-remove:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #ef4444;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .wishlist-banner {
+        padding: 2rem 1.5rem;
+        min-height: 140px;
+        margin-bottom: 1.5rem;
+      }
+
+      .wishlist-banner h1 {
+        font-size: 1.75rem;
+      }
+
+      .wishlist-banner p {
+        font-size: 0.95rem;
+      }
+
+      .stat-grid {
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .stat-info p {
+        font-size: 1.25rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .wishlist-banner::after {
+        display: none;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-info h3 {
+        font-size: 0.7rem;
+      }
+
+      .stat-info p {
+        font-size: 1.1rem;
+      }
+
+      #items {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+
+  <main class="container">
+    <!-- Hero Banner -->
+    <div class="wishlist-banner">
+      <div class="wishlist-banner-content">
+        <h1><i class="fa-solid fa-heart" style="font-size: 2rem; margin-right: 0.5rem;"></i> My Wishlist</h1>
+        <p>Products you have saved for later. Move them to your cart when you are ready to checkout.</p>
+      </div>
+    </div>
+
+    <!-- Wishlist Stats -->
+    <div class="stat-grid" id="wishlist-stats">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Saved Items</h3>
+          <p id="stat-saved-count">0</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Average Price</h3>
+          <p id="stat-avg-price">&#8358;0.00</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Grid -->
+    <div id="items" class="grid grid-3">
+      <div class="loading-state" style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+        <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary);"></i>
+        <p style="margin-top: 1rem; color: var(--text-muted);">Loading your saved items...</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/layout.js"></script>
+  <script src="../../assets/js/pages/common.js"></script>
+  <script>
+    mountLayout();
+    authRequired().then(load);
+
+    function fmtNaira(val) {
+      return '\u20A6' + Number(val).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    async function load() {
+      const itemsContainer = document.getElementById('items');
+      const countStat = document.getElementById('stat-saved-count');
+      const priceStat = document.getElementById('stat-avg-price');
+      
+      try {
+        const rows = await api("wishlist.list");
+        
+        // Calculate statistics dynamically
+        const savedCount = rows.length;
+        const avgPrice = savedCount > 0 ? rows.reduce((sum, r) => sum + Number(r.price), 0) / savedCount : 0;
+
+        countStat.textContent = savedCount;
+        priceStat.textContent = fmtNaira(avgPrice);
+
+        if (rows.length === 0) {
+          itemsContainer.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 5rem 2rem; background: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border-color);">
+              <div style="background: var(--bg-alt); width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                <i class="fa-regular fa-heart" style="font-size: 2.5rem; color: var(--text-muted);"></i>
+              </div>
+              <h2 style="margin-bottom: 0.5rem;">Your wishlist is empty</h2>
+              <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                You haven't saved any items yet. Browse our selection of premium beverages and save your favorites!
+              </p>
+              <a href="../shop.html" class="btn btn-primary">Browse Shop</a>
+            </div>
+          `;
+          return;
+        }
+
+        itemsContainer.innerHTML = rows.map(p => `
+          <article class="wishlist-card">
+            <div class="wishlist-img-wrapper">
+              <img src="${getProductImageUrl(p.image_url)}" class="wishlist-img" alt="${p.name}">
+            </div>
+            <div class="wishlist-body">
+              <span class="wishlist-category">${p.category || 'Beverage'}</span>
+              <h3 class="wishlist-title">${p.name}</h3>
+              <div class="wishlist-price">${fmtNaira(p.price)}</div>
+            </div>
+            <div class="wishlist-actions">
+              <button class="btn btn-primary btn-add" onclick="moveToCart(${p.id})">
+                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+              </button>
+              <button class="btn-remove" onclick="removeW(${p.id})" title="Remove from wishlist">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </article>
+        `).join('');
+      } catch (e) {
+        console.error("Failed to load wishlist", e);
+        itemsContainer.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 3rem; background: var(--bg-card); border-radius: 1rem; border: 1px solid var(--border-color);">
+            <i class="fa-solid fa-circle-exclamation" style="font-size: 3rem; color: var(--accent); margin-bottom: 1rem;"></i>
+            <p style="color: var(--text-muted);">Failed to load your wishlist. Please try again.</p>
+            <button onclick="load()" class="btn btn-ghost btn-small" style="margin-top: 1rem;">Retry</button>
+          </div>
+        `;
+      }
+    }
+
+    async function moveToCart(id) {
+      try {
+        toast("Adding to cart...", "info");
+        await api('cart.add', 'POST', {product_id: id, quantity: 1});
+        toast('Item added to your cart!', 'success');
+        if (window.updateCartBadge) {
+          window.updateCartBadge();
+        }
+      } catch(e) {
+        toast(e.message || 'Failed to add to cart.', 'error');
+      }
+    }
+
+    async function removeW(id) {
+      try {
+        toast("Removing item...", "info");
+        await api("wishlist.remove", "POST", {product_id: id});
+        toast("Item removed from wishlist.", "success");
+        load();
+      } catch(e) {
+        toast(e.message || "Failed to remove item.", "error");
+      }
+    }
+  </script>
+</body>
+</html>

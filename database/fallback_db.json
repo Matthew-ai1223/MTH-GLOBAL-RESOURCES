@@ -1,0 +1,204 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "olalekanadeniyi081@gmail.com",
+      "username": "olalekan",
+      "password_hash": "$2y$10$Sy.hQ5/4F9Vh9LXHqDAtA.fv0/azBChlpy9QvK47HZC90Xb4HJyES",
+      "role": "customer",
+      "is_verified": 1,
+      "created_at": "2026-05-15T09:00:00Z"
+    },
+    {
+      "id": 2,
+      "email": "@admin2026",
+      "username": "@admin2026",
+      "password_hash": "$2y$10$ZDrYuQX9CFswaqCWx9pL7ejUV.LFOkttno/m..FM2R1YYD.D3aTq6",
+      "role": "admin",
+      "is_verified": 1,
+      "created_at": "2026-05-15T09:00:00Z"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "MTH Premium Spring Water (75cl x 12 Pack)",
+      "category": "Water",
+      "price": 2400.00,
+      "stock": 120,
+      "image_url": "https://images.unsplash.com/photo-1608885898957-a599fb1bf88d?auto=format&fit=crop&w=600&q=80",
+      "description": "Pure, natural spring water sourced from protected artesian wells. Refreshingly crisp and rich in natural minerals."
+    },
+    {
+      "id": 2,
+      "name": "Pure Alkaline Ionized Water (1.5L x 6 Pack)",
+      "category": "Water",
+      "price": 1800.00,
+      "stock": 95,
+      "image_url": "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80",
+      "description": "Enhanced with electrolytes and ionized to a healthy pH of 9.5. Promotes optimal hydration and cellular balance."
+    },
+    {
+      "id": 3,
+      "name": "Sparkling Mineral Water (50cl x 12 Glass Bottles)",
+      "category": "Water",
+      "price": 4500.00,
+      "stock": 60,
+      "image_url": "https://images.unsplash.com/photo-1559839914-17aae19cec71?auto=format&fit=crop&w=600&q=80",
+      "description": "Naturally carbonated mineral water in premium glass bottles. Light, effervescent, and sophisticated."
+    },
+    {
+      "id": 4,
+      "name": "MTH Purified Dispenser Bottle (20 Liters)",
+      "category": "Water",
+      "price": 1200.00,
+      "stock": 150,
+      "image_url": "https://images.unsplash.com/photo-1548839130-3fd2e29128fd?auto=format&fit=crop&w=600&q=80",
+      "description": "Large multi-use bottle for office or home water dispensers. Multi-stage micro-filtration ensures absolute purity."
+    },
+    {
+      "id": 5,
+      "name": "Classic Cola Soft Drink (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 3600.00,
+      "stock": 200,
+      "image_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80",
+      "description": "The timeless, refreshing cola taste you love, served ice-cold for ultimate satisfaction."
+    },
+    {
+      "id": 6,
+      "name": "Zesty Orange Soda (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 3600.00,
+      "stock": 180,
+      "image_url": "https://images.unsplash.com/photo-1567103472667-6898f3a83cf2?auto=format&fit=crop&w=600&q=80",
+      "description": "Bursting with sweet, tangy orange flavor and fine carbonation. A family favorite refreshment."
+    },
+    {
+      "id": 7,
+      "name": "Lemon-Lime Carbonated Soda (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 3600.00,
+      "stock": 220,
+      "image_url": "https://images.unsplash.com/photo-1527960656366-ee2a999e32e6?auto=format&fit=crop&w=600&q=80",
+      "description": "Crisp, clean, and completely refreshing. The perfect blend of lemon and lime notes."
+    },
+    {
+      "id": 8,
+      "name": "Diet Cola Sugar-Free (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 3800.00,
+      "stock": 110,
+      "image_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80",
+      "description": "Zero sugar and zero calories, with the same rich, delicious taste of classic cola."
+    },
+    {
+      "id": 9,
+      "name": "Pineapple Sparkle Soda (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 3600.00,
+      "stock": 140,
+      "image_url": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
+      "description": "Exotic pineapple flavor combined with lively bubbles. Pure tropical bliss in every bottle."
+    },
+    {
+      "id": 10,
+      "name": "Premium Tonic Water (35cl Can x 24 Pack)",
+      "category": "Soft Drinks",
+      "price": 7500.00,
+      "stock": 85,
+      "image_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80",
+      "description": "Slightly bitter and perfectly balanced with real quinine. Ideal for premium mixing or standalone drinking."
+    },
+    {
+      "id": 11,
+      "name": "Bold Cream Soda (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 3600.00,
+      "stock": 125,
+      "image_url": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
+      "description": "Smooth, velvety vanilla cream flavor that delivers a sweet and comforting treat."
+    },
+    {
+      "id": 12,
+      "name": "Sparkling Ginger Ale (35cl Can x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 4800.00,
+      "stock": 90,
+      "image_url": "https://images.unsplash.com/photo-1527960656366-ee2a999e32e6?auto=format&fit=crop&w=600&q=80",
+      "description": "Made with natural ginger extracts for a refreshing, spicy kick and clean finish."
+    },
+    {
+      "id": 13,
+      "name": "MTH Power Energy Drink (25cl Can x 24 Pack)",
+      "category": "Soft Drinks",
+      "price": 9600.00,
+      "stock": 75,
+      "image_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80",
+      "description": "Formulated with Taurine, Caffeine, and B-vitamins to vitalize body and mind."
+    },
+    {
+      "id": 14,
+      "name": "Natural Hibiscus Iced Tea (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 4200.00,
+      "stock": 130,
+      "image_url": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
+      "description": "Brewed from organic hibiscus petals and lightly sweetened. Packed with antioxidants."
+    },
+    {
+      "id": 15,
+      "name": "Peach Iced Tea Blend (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 4200.00,
+      "stock": 120,
+      "image_url": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80",
+      "description": "Real black tea leaves infused with natural peach juice for a sweet and soothing flavor."
+    },
+    {
+      "id": 16,
+      "name": "Club Soda Carbonated (35cl Can x 24 Pack)",
+      "category": "Soft Drinks",
+      "price": 7000.00,
+      "stock": 105,
+      "image_url": "https://images.unsplash.com/photo-1608885898957-a599fb1bf88d?auto=format&fit=crop&w=600&q=80",
+      "description": "Pure carbonated water with mineral salts added for a crisp, bubbly mouthfeel."
+    },
+    {
+      "id": 17,
+      "name": "Premium Distilled Water (4L Bottle)",
+      "category": "Water",
+      "price": 1000.00,
+      "stock": 80,
+      "image_url": "https://images.unsplash.com/photo-1548839130-3fd2e29128fd?auto=format&fit=crop&w=600&q=80",
+      "description": "High-purity water, ideal for health equipment, automotive use, or specialized laboratory processes."
+    },
+    {
+      "id": 18,
+      "name": "Kids Mini Spring Water (33cl x 24 Pack)",
+      "category": "Water",
+      "price": 3000.00,
+      "stock": 90,
+      "image_url": "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80",
+      "description": "Conveniently sized mini bottles, perfect for school lunches and active kids."
+    },
+    {
+      "id": 19,
+      "name": "Ruby Grapefruit Citrus Soda (50cl x 12 Pack)",
+      "category": "Soft Drinks",
+      "price": 3600.00,
+      "stock": 115,
+      "image_url": "https://images.unsplash.com/photo-1567103472667-6898f3a83cf2?auto=format&fit=crop&w=600&q=80",
+      "description": "A delightfully tart and refreshing citrus experience featuring ruby red grapefruit notes."
+    },
+    {
+      "id": 20,
+      "name": "Vitamin Enhanced Water (50cl x 12 Pack)",
+      "category": "Water",
+      "price": 4800.00,
+      "stock": 100,
+      "image_url": "https://images.unsplash.com/photo-1548839130-3fd2e29128fd?auto=format&fit=crop&w=600&q=80",
+      "description": "Nutrient-enhanced water featuring high doses of Vitamin C, B5, B6, and B12."
+    }
+  ]
+}

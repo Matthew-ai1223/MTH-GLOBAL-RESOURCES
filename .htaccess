@@ -1,0 +1,71 @@
+# ERFA FARMS - Local Apache Configuration
+# IMPORTANT: Ensure "AllowOverride All" is set in your Apache config for this directory!
+
+Options -Indexes
+DirectoryIndex index.html
+RewriteEngine On
+
+# Dynamically determine the base path for both local (e.g. /new-files/nu-farm/) and production (/)
+RewriteCond %{REQUEST_URI}::$1 ^(.*?)(.*)::\2$
+RewriteRule ^(.*)$ - [E=BASE:%1]
+
+# 1. Custom 404 Page (Handled via rewrite rule at the bottom for local/prod compatibility)
+# ErrorDocument 404 /404.html
+
+# 2. Clean URLs: Redirect .html to non-html
+# Prevents double encoding by using the NE (No Escape) flag
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule ^(.*)\.html$ %{ENV:BASE}$1 [L,R=301,NE]
+
+# 3. Clean URLs: Internal mapping (e.g., /shop -> shop.html)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# 4. Handle Backend API fallback
+RewriteRule ^api(/.*)?$ backend/api.php [L,QSA]
+
+# 5. Catch-all for non-existent files/folders
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ 404.html [L]
+
+# ==============================================================================
+# SEO & PERFORMANCE OPTIMIZATIONS
+# ==============================================================================
+
+# Exclude API routes and direct backend API script from HTTPS redirection (preserve POST)
+RewriteCond %{REQUEST_URI} ^/api [NC,OR]
+RewriteCond %{REQUEST_URI} ^/backend/api\.php [NC]
+RewriteRule ^ - [L]
+
+# A. Force HTTPS only on production domains (skip localhost and InfinityFree hosts)
+RewriteCond %{HTTP_HOST} ^(www\.)?(example\.com|myfarm\.com)$ [NC]
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+
+# B. GZIP Compression (Speeds up site load time for better SEO)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript application/json application/xml application/xhtml+xml application/rss+xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# C. Browser Caching (Leverage browser caching for returning visitors)
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Images
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  # CSS, JavaScript
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  # Others
+  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresDefault "access plus 2 days"
+</IfModule>

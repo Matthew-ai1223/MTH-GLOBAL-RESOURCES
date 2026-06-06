@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard | MTH GLOBAL RESOURCES</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    /* Dashboard Specific Styles */
+    .dashboard-container {
+      padding-top: 1rem;
+      padding-bottom: 3rem;
+    }
+
+    /* Welcome Banner */
+    .welcome-banner {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 200px;
+    }
+
+    .welcome-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+      z-index: 1;
+    }
+
+    .welcome-banner::after {
+      content: '\f0d1'; /* truck icon */
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: -10%;
+      top: 50%;
+      transform: translateY(-50%) rotate(-10deg);
+      font-size: 16rem;
+      color: rgba(255, 255, 255, 0.05);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .welcome-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .welcome-banner h1 {
+      color: white;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .welcome-banner p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Stat Cards */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--accent);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover::before {
+      opacity: 1;
+    }
+
+    .stat-info {
+      flex: 1;
+    }
+
+    .stat-info h3 {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin: 0 0 0.5rem 0;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-info p {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0;
+      line-height: 1;
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    /* Content Layout */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 2rem;
+    }
+
+    /* Section Cards */
+    .section-card {
+      background: var(--bg-card);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
+      height: 100%;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-header h2 {
+      font-size: 1.25rem;
+      margin: 0;
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    .view-all-link {
+      font-size: 0.875rem;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: color 0.2s;
+    }
+
+    .view-all-link:hover {
+      color: var(--accent);
+    }
+
+    /* Timeline / Activity List */
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem 0;
+      position: relative;
+    }
+
+    .activity-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 2.5rem;
+      left: 0.5rem;
+      bottom: -1rem;
+      width: 2px;
+      background: var(--border-color);
+      z-index: 1;
+    }
+
+    .activity-dot-wrapper {
+      position: relative;
+      z-index: 2;
+      background: var(--bg-card);
+      padding: 0.25rem 0;
+    }
+
+    .activity-dot {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg-card);
+      box-shadow: 0 0 0 1px var(--border-color);
+    }
+
+    .activity-content {
+      flex: 1;
+      padding-top: 0.1rem;
+    }
+
+    .activity-title {
+      margin: 0 0 0.25rem 0;
+      font-weight: 600;
+      color: var(--text-main);
+      font-size: 0.95rem;
+    }
+
+    .activity-date {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Quick Actions Grid */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem 1rem;
+      gap: 0.75rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      color: var(--text-main);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .action-btn i {
+      font-size: 1.75rem;
+      color: var(--primary);
+      transition: transform 0.2s ease;
+    }
+
+    .action-btn span {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .action-btn:hover {
+      background: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .action-btn:hover i {
+      transform: scale(1.1);
+      color: var(--accent);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+      
+      .welcome-banner::after {
+        right: -15%;
+        font-size: 12rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .welcome-banner {
+        padding: 2rem 1.5rem;
+      }
+      
+      .welcome-banner h1 {
+        font-size: 2rem;
+      }
+      
+      .welcome-banner::after {
+        display: none; /* Hide tractor on very small screens to save space */
+      }
+      
+      .quick-actions-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .action-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 1rem 1.5rem;
+      }
+      
+      .action-btn i {
+        font-size: 1.25rem;
+        width: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="layout"></div>
+
+  <main class="container dashboard-container">
+    
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="welcome-content">
+        <h1 id="welcome-text">Loading...</h1>
+        <p>Welcome to your MTH GLOBAL RESOURCES dashboard. Here's a quick overview of your activity and orders.</p>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Orders</h3>
+          <p id="stat-orders">0</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(132, 204, 22, 0.15); color: var(--accent);">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>In Delivery</h3>
+          <p id="stat-delivery">0</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(14, 165, 233, 0.15); color: #0ea5e9;">
+          <i class="fa-solid fa-truck-fast"></i>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Wishlist Items</h3>
+          <p id="stat-wishlist">0</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Spent</h3>
+          <p id="stat-spent">₦0.00</p>
+        </div>
+        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+          <i class="fa-solid fa-wallet"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="dashboard-layout">
+      
+      <!-- Recent Activity Timeline -->
+      <section class="section-card">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-clock-rotate-left" style="color:var(--text-muted); margin-right:8px;"></i> Recent Activity</h2>
+          <a href="./orders.html" class="view-all-link">View All <i class="fa-solid fa-arrow-right-long"></i></a>
+        </div>
+        <div class="activity-list" id="activity-list">
+          <div style="text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+            <i class="fa-solid fa-circle-notch fa-spin fa-2x" style="color: var(--primary-light);"></i>
+            <p style="margin-top: 1rem;">Loading your activity...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="section-card">
+        <div class="section-header">
+          <h2><i class="fa-solid fa-bolt" style="color:var(--accent); margin-right:8px;"></i> Quick Actions</h2>
+        </div>
+        <div class="quick-actions-grid">
+          <a href="../shop.html" class="action-btn">
+            <i class="fa-solid fa-store"></i>
+            <span>Browse Shop</span>
+          </a>
+          <a href="./orders.html" class="action-btn">
+            <i class="fa-solid fa-box-open"></i>
+            <span>Track Orders</span>
+          </a>
+          <a href="./wishlist.html" class="action-btn">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <span>My Wishlist</span>
+          </a>
+          <a href="./profile.html" class="action-btn">
+            <i class="fa-solid fa-user-gear"></i>
+            <span>Account Settings</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/layout.js"></script>
+  <script src="../../assets/js/pages/common.js"></script>
+  <script>
+    mountLayout();
+
+    // Helper to get time-based greeting
+    function getGreeting() {
+      const hour = new Date().getHours();
+      if (hour < 12) return "Good morning";
+      if (hour < 17) return "Good afternoon";
+      return "Good evening";
+    }
+
+    async function initDashboard() {
+      const me = await authRequired();
+      if (!me) return;
+
+      // Update greeting
+      document.getElementById('welcome-text').textContent = `${getGreeting()}, ${me.name.split(' ')[0]}!`;
+
+      try {
+        const [orders, wishlist] = await Promise.all([
+          api('orders.list'),
+          api('wishlist.list')
+        ]);
+
+        const totalOrders = orders.length;
+        const inDelivery = orders.filter(o => o.status === 'Processing' || o.status === 'Shipped').length;
+        const wishlistCount = wishlist.length;
+        const totalSpent = orders.reduce((sum, o) => sum + Number(o.total_amount), 0);
+
+        // Animate numbers
+        animateValue('stat-orders', 0, totalOrders, 1000);
+        animateValue('stat-delivery', 0, inDelivery, 1000);
+        animateValue('stat-wishlist', 0, wishlistCount, 1000);
+
+        // Format as Nigerian Naira
+        const formatter = new Intl.NumberFormat('en-NG', {
+          style: 'currency',
+          currency: 'NGN',
+          minimumFractionDigits: 2
+        });
+        document.getElementById('stat-spent').textContent = formatter.format(totalSpent);
+
+        const activityList = document.getElementById('activity-list');
+
+        if (orders.length === 0 && wishlist.length === 0) {
+          activityList.innerHTML = `
+            <div style="text-align: center; padding: 2rem 1rem;">
+              <div style="width: 64px; height: 64px; background: var(--bg-alt); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: var(--text-muted); font-size: 1.5rem;">
+                <i class="fa-solid fa-bottle-water"></i>
+              </div>
+              <p style="color: var(--text-main); font-weight: 500; margin-bottom: 0.5rem;">It's quiet here!</p>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0;">You haven't made any orders or added items to your wishlist yet.</p>
+              <a href="../shop.html" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Start Shopping</a>
+            </div>
+          `;
+        } else {
+          // Combine and sort activities
+          const activities = [
+            ...orders.map(o => ({
+              type: 'order',
+              text: `Order #${o.id} - <span style="color:var(--primary);">${o.status}</span>`,
+              desc: `Amount: ${formatter.format(o.total_amount)}`,
+              date: new Date(o.created_at),
+              color: 'var(--primary)',
+              icon: 'fa-bag-shopping'
+            })),
+            ...wishlist.map(w => ({
+              type: 'wishlist',
+              text: `Added to wishlist`,
+              desc: `"${w.name}"`,
+              date: new Date(), // Wishlist doesn't have a date in this schema, using current for sorting
+              color: '#ef4444',
+              icon: 'fa-heart'
+            }))
+          ].sort((a, b) => b.date - a.date).slice(0, 5); // Show top 5
+
+          // HTML for activity list
+          activityList.innerHTML = activities.map(a => {
+            // formatting relative time (e.g. "2 days ago")
+            const diffDays = Math.floor((new Date() - a.date) / (1000 * 60 * 60 * 24));
+            let timeStr = a.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            if (diffDays === 0) timeStr = 'Today';
+            else if (diffDays === 1) timeStr = 'Yesterday';
+
+            return `
+              <div class="activity-item">
+                <div class="activity-dot-wrapper">
+                  <div class="activity-dot" style="background: ${a.color};"></div>
+                </div>
+                <div class="activity-content">
+                  <p class="activity-title">${a.text}</p>
+                  <p style="margin: 0; font-size: 0.85rem; color: var(--text-main); margin-bottom: 0.25rem;">${a.desc}</p>
+                  <p class="activity-date"><i class="fa-regular fa-clock"></i> ${timeStr}</p>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        console.error("Dashboard error:", err);
+        document.getElementById('activity-list').innerHTML = `
+          <div style="background: rgba(239, 68, 68, 0.1); color: #dc2626; padding: 1rem; border-radius: var(--radius-md); text-align: center;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Error loading dashboard data. Please refresh.
+          </div>
+        `;
+      }
+    }
+
+    // Number animation helper
+    function animateValue(id, start, end, duration) {
+      if (start === end) return;
+      const obj = document.getElementById(id);
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start);
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    initDashboard();
+  </script>
+</body>
+
+</html>

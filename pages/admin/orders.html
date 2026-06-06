@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Orders | MTH GLOBAL RESOURCES Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .badge-Pending { background: rgba(245,158,11,0.1); color:#b45309; }
+    .badge-Processing { background: rgba(59,130,246,0.1); color:#1d4ed8; }
+    .badge-Shipped { background: rgba(139,92,246,0.1); color:#6d28d9; }
+    .badge-Delivered,.badge-Paid { background: rgba(16,185,129,0.1); color:#047857; }
+    .badge-Cancelled { background: rgba(239,68,68,0.1); color:#b91c1c; }
+    .badge-pod { background: rgba(157,23,77,0.1); color:#9d174d; }
+    .header-banner { background: linear-gradient(135deg,var(--bg-card),var(--bg-alt)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; border:1px solid var(--border-color); display:flex; align-items:center; gap:1.5rem; }
+    .header-icon { background:rgba(59,130,246,0.1); color:#1d4ed8; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div class="header-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;">Manage Orders</h1>
+        <p style="margin:.5rem 0 0;color:var(--text-muted);">View and update all customer orders.</p>
+      </div>
+    </div>
+    <section class="card">
+      <div id="orders-container">
+        <div style="text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+      </div>
+    </section>
+  </main>
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/admin-layout.js"></script>
+  <script src="../../assets/js/pages/common.js"></script>
+  <script>
+    mountAdminLayout();
+    authRequired().then(load);
+
+    async function load() {
+      const container = document.getElementById('orders-container');
+      try {
+        const rows = await api("orders.all");
+        if (!rows.length) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem;">No orders yet.</p>'; return; }
+        container.innerHTML = `<div class="table-responsive"><table>
+          <thead><tr><th>ID</th><th>Customer</th><th>Date</th><th>Method</th><th>Status</th><th>Payment</th><th>Total</th><th>Action</th></tr></thead>
+          <tbody>${rows.map(o => `<tr>
+            <td><strong>#${o.id}</strong></td>
+            <td>${o.customer_name}</td>
+            <td>${new Date(o.created_at).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'})}</td>
+            <td>
+              <span class="badge ${o.payment_method==='pod'?'badge-pod':'badge-Processing'}" style="font-size:0.75rem; white-space:nowrap;">
+                <i class="fa-solid ${o.payment_method==='pod'?'fa-truck':'fa-credit-card'}"></i> 
+                ${o.payment_method==='pod'?'POD':'Pay Online'}
+              </span>
+            </td>
+            <td><span class="badge badge-${o.status.replace(' ','')}">${o.status}</span></td>
+            <td><span class="badge badge-${o.payment_status}">${o.payment_status||'Pending'}</span></td>
+            <td style="font-weight:700;">₦${Number(o.total_amount).toLocaleString('en-NG',{minimumFractionDigits:2})}</td>
+            <td>
+              <select onchange="updateStatus(${o.id},this.value)" style="padding:.4rem .75rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-family:'Inter',sans-serif;font-size:.85rem;">
+                ${['Pending','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option ${o.status===s?'selected':''}>${s}</option>`).join('')}
+              </select>
+            </td>
+          </tr>`).join('')}</tbody>
+        </table></div>`;
+      } catch(e) { container.innerHTML = `<p style="color:red;text-align:center;">Error: ${e.message}</p>`; }
+    }
+
+    async function updateStatus(id, status) {
+      try {
+        await api("orders.status.update", "POST", {order_id: id, status});
+        load();
+      } catch(e) { toast("Failed to update: " + e.message); }
+    }
+  </script>
+</body>
+</html>

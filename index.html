@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTH GLOBAL RESOURCES | Premium Bottled Water & Soft Drinks</title>
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="MTH GLOBAL RESOURCES | Premium Bottled Water & Soft Drinks">
+  <meta name="description" content="MTH GLOBAL RESOURCES offers premium, refreshing bottled spring water, carbonated soft drinks, and beverages. Experience clean hydration and top-quality drinks.">
+  <meta name="keywords" content="MTH GLOBAL RESOURCES, premium water, soft drinks, carbonated drinks, spring water, clean hydration, bottled water Nigeria, soda, beverages">
+  <meta name="author" content="MTH GLOBAL RESOURCES">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://mthglobal.com/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mthglobal.com/">
+  <meta property="og:title" content="MTH GLOBAL RESOURCES | Premium Bottled Water & Soft Drinks">
+  <meta property="og:description" content="MTH GLOBAL RESOURCES offers premium, refreshing bottled spring water, carbonated soft drinks, and beverages. Experience clean hydration and top-quality drinks.">
+  <meta property="og:image" content="https://mthglobal.com/assets/icon.svg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://mthglobal.com/">
+  <meta property="twitter:title" content="MTH GLOBAL RESOURCES | Premium Bottled Water & Soft Drinks">
+  <meta property="twitter:description" content="MTH GLOBAL RESOURCES offers premium, refreshing bottled spring water, carbonated soft drinks, and beverages. Experience clean hydration and top-quality drinks.">
+  <meta property="twitter:image" content="https://mthglobal.com/assets/icon.svg">
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e3a8a">
+
+  <!-- iOS PWA Support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MTH GLOBAL">
+  <link rel="apple-touch-icon" href="assets/icon.svg">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <!-- Cookie Banner Styles -->
+  <style>
+    .cookie-banner {
+      position: fixed;
+      bottom: -100%;
+      left: 1rem;
+      right: 1rem;
+      z-index: 9999;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.25rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(30, 58, 138, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cookie-banner.show {
+      bottom: 1rem;
+    }
+
+    .cookie-content {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .cookie-icon {
+      font-size: 1.5rem;
+      color: var(--primary, #1e3a8a);
+      background: rgba(30, 58, 138, 0.08);
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .cookie-banner:hover .cookie-icon {
+      transform: rotate(15deg);
+    }
+
+    .cookie-text h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-dark, #0f172a);
+    }
+
+    .cookie-text p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted, #4b5563);
+      line-height: 1.5;
+    }
+
+    .cookie-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .cookie-banner .btn-decline {
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 10px;
+      cursor: pointer;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-main, #1e293b);
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+    }
+    
+    .cookie-banner .btn-decline:hover {
+      background: var(--bg-alt, #f1f5f9);
+      border-color: #cbd5e1;
+    }
+    
+    .cookie-banner .btn-accept {
+      padding: 0.6rem 1.2rem;
+      background: var(--primary, #1e3a8a);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
+      text-align: center;
+    }
+    
+    .cookie-banner .btn-accept:hover {
+      background: var(--primary-light, #3b82f6);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(30, 58, 138, 0.25);
+    }
+
+    @media (min-width: 768px) {
+      .cookie-banner {
+        left: auto;
+        right: 2rem;
+        width: 400px;
+        padding: 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 1px 5px rgba(0, 0, 0, 0.03);
+      }
+      .cookie-banner.show {
+        bottom: 2rem;
+      }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .cookie-banner {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 1px 5px rgba(0, 0, 0, 0.1);
+      }
+      .cookie-icon {
+        color: #3b82f6;
+        background: rgba(59, 130, 246, 0.1);
+      }
+      .cookie-text h4 {
+        color: #f8fafc;
+      }
+      .cookie-text p {
+        color: #94a3b8;
+      }
+      .cookie-banner .btn-decline {
+        color: #f8fafc;
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      .cookie-banner .btn-decline:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .cookie-banner .btn-accept {
+        background: var(--secondary, #0ea5e9);
+        color: white;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      }
+      .cookie-banner .btn-accept:hover {
+        background: #1e3a8a;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header" id="header">
+    <div class="shell">
+      <div class="nav">
+        <a href="#" class="brand">
+          <i class="fa-solid fa-droplet"></i>
+          <span>MTH GLOBAL</span>
+        </a>
+        <nav class="nav-links">
+          <a href="#about">About</a>
+          <a href="#products">Products</a>
+          <a href="#app-pages">App Pages</a>
+          <a href="#testimonials">Testimonials</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <div class="nav-actions">
+          <button id="installAppBtn" class="btn btn-secondary btn-small"
+            style="display: none; background: var(--accent); color: white; border: none; margin-right: 10px;">
+            <i class="fa-solid fa-download"></i> Install App
+          </button>
+          <a class="btn btn-primary btn-small" href="pages/shop.html">
+            Shop <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="shell" style="position: relative;">
+        <div id="heroCarousel" class="carousel-container">
+          <!-- Slide 1 -->
+          <div class="hero-slide active">
+            <div class="hero-grid">
+              <div class="hero-content">
+                <span class="eyebrow"><i class="fa-solid fa-droplet"></i> Pure Hydration</span>
+                <h1>Pure spring water for a healthy life.</h1>
+                <p class="lead">
+                  MTH GLOBAL RESOURCES provides exceptionally clean, mineral-rich spring water,
+                  filtered using advanced multi-stage purification technologies for home and office hydration.
+                </p>
+                <div class="hero-actions">
+                  <a class="btn btn-primary" href="pages/shop.html"><i class="fa-solid fa-cart-shopping"></i> Shop
+                    Now</a>
+                  <a class="btn btn-ghost" href="#contact">Get In Touch</a>
+                </div>
+              </div>
+              <div class="hero-visual">
+                <div class="hero-card">
+                  <div class="image-wrapper">
+                    <img class="hero-image"
+                      src="https://images.unsplash.com/photo-1548839130-3fd2e29128fd?auto=format&fit=crop&w=900&q=80"
+                      alt="Pouring glass of fresh water">
+                    <div class="floating-badge"><i class="fa-solid fa-certificate"></i><span>100% Pure</span></div>
+                  </div>
+                  <h3><i class="fa-solid fa-award"></i> Why MTH GLOBAL?</h3>
+                  <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Multi-Stage Purification</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Rich in Natural Minerals</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Eco-Friendly Bottling Operations</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="hero-slide">
+            <div class="hero-grid">
+              <div class="hero-content">
+                <span class="eyebrow"><i class="fa-solid fa-glass-water"></i> Ice Cold Refreshment</span>
+                <h1>Premium Soft Drinks & Bubbly Sodas.</h1>
+                <p class="lead">
+                  Discover our vibrant selection of carbonated soft drinks, fruit sodas, and energy drinks designed to refresh your day and elevate your celebrations.
+                </p>
+                <div class="hero-actions">
+                  <a class="btn btn-primary" href="pages/shop.html"><i class="fa-solid fa-cart-shopping"></i> Shop
+                    Sodas</a>
+                  <a class="btn btn-ghost" href="#about">Learn More</a>
+                </div>
+              </div>
+              <div class="hero-visual">
+                <div class="hero-card">
+                  <div class="image-wrapper">
+                    <img class="hero-image" src="https://images.unsplash.com/photo-1527960656366-ee2a999e32e6?auto=format&fit=crop&w=900&q=80" alt="Soda bubbles and ice">
+                    <div class="floating-badge"><i class="fa-solid fa-bolt"></i><span>Ice Cold</span></div>
+                  </div>
+                  <h3><i class="fa-solid fa-award"></i> Premium Taste</h3>
+                  <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Wide Range of Flavors</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Low-Sugar Options Available</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Instant Thirst Quencher</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="hero-slide">
+            <div class="hero-grid">
+              <div class="hero-content">
+                <span class="eyebrow"><i class="fa-solid fa-truck"></i> Bulk Distribution</span>
+                <h1>Reliable Wholesale Beverage Supply.</h1>
+                <p class="lead">
+                  We partner with retailers, offices, and event hosts to provide bulk delivery of premium water and soft drinks across the region with guaranteed timely fulfillment.
+                </p>
+                <div class="hero-actions">
+                  <a class="btn btn-primary" href="#contact"><i class="fa-solid fa-handshake"></i> Order Bulk</a>
+                </div>
+              </div>
+              <div class="hero-visual">
+                <div class="hero-card">
+                  <div class="image-wrapper">
+                    <img class="hero-image" src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=900&q=80" alt="Beverage distribution crates">
+                    <div class="floating-badge"><i class="fa-solid fa-route"></i><span>Fast Delivery</span></div>
+                  </div>
+                  <h3><i class="fa-solid fa-award"></i> Wholesale Supply</h3>
+                  <ul>
+                    <li><i class="fa-solid fa-circle-check"></i> Competitive Wholesale Pricing</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Scheduled Office Water Deliveries</li>
+                    <li><i class="fa-solid fa-circle-check"></i> Event Supply & Logistics Support</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="prevSlide"><i class="fa-solid fa-chevron-left"></i></button>
+          <div class="carousel-dots" id="carouselDots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+          </div>
+          <button class="carousel-btn" id="nextSlide"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="shell">
+        <div class="section-title">
+          <h2>Who We Are</h2>
+          <p>Refreshing our community with premium water and soft drinks.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
+            <h3>Our Mission</h3>
+            <p>Deliver top-tier bottled water and refreshing beverages that meet the highest standards of safety, quality, and taste.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-eye"></i></div>
+            <h3>Our Vision</h3>
+            <p>Become the leading, most trusted wholesale and retail beverage distributor in Nigeria, renowned for speed and purity.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-heart"></i></div>
+            <h3>Our Inspiration</h3>
+            <p>A commitment to health, hydration, and creating refreshing experiences for every household and business we serve.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suggested Products Section -->
+    <section id="suggested-products" class="section" style="display: none;">
+      <div class="shell">
+        <div class="section-title">
+          <h2><i class="fa-solid fa-star" style="color: #fbbf24;"></i> Suggested for You</h2>
+          <p>Handpicked recommendations based on your interests.</p>
+        </div>
+        <div class="product-grid" id="suggested-container">
+          <!-- Dynamically populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="section section-alt">
+      <div class="shell">
+        <div class="section-title">
+          <h2>Our Popular Drinks</h2>
+          <p>Premium quality bottled water and sodas to quench your thirst.</p>
+        </div>
+
+        <div class="product-grid">
+          <article class="product-card track-behavior" data-category="water">
+            <img src="https://images.unsplash.com/photo-1608885898957-a599fb1bf88d?auto=format&fit=crop&w=600&q=80" alt="Spring Water">
+            <div class="product-info">
+              <h3>Premium Spring Water</h3>
+              <p>Naturally filtered, crisp spring water</p>
+            </div>
+          </article>
+
+          <article class="product-card track-behavior" data-category="water">
+            <img src="https://images.unsplash.com/photo-1559839914-17aae19cec71?auto=format&fit=crop&w=600&q=80" alt="Sparkling Water">
+            <div class="product-info">
+              <h3>Sparkling Mineral Water</h3>
+              <p>Light, bubbly sparkling water</p>
+            </div>
+          </article>
+
+          <article class="product-card track-behavior" data-category="soft drinks">
+            <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80" alt="Classic Cola">
+            <div class="product-info">
+              <h3>Classic Cola Soda</h3>
+              <p>Timeless carbonated cola soda</p>
+            </div>
+          </article>
+
+          <article class="product-card track-behavior" data-category="soft drinks">
+            <img src="https://images.unsplash.com/photo-1567103472667-6898f3a83cf2?auto=format&fit=crop&w=600&q=80" alt="Orange Soda">
+            <div class="product-info">
+              <h3>Zesty Orange Soda</h3>
+              <p>Sweet, carbonated orange soda</p>
+            </div>
+          </article>
+        </div>
+        
+        <div class="section-actions" style="text-align: center; margin-top: 3rem;">
+          <a href="pages/shop.html" class="btn btn-primary">
+            View All Products <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Pages Grid -->
+    <section id="app-pages" class="section">
+      <div class="shell">
+        <div class="section-title">
+          <h2>Explore the Platform</h2>
+          <p>Quick access to all modules of the MTH GLOBAL resources.</p>
+        </div>
+
+        <div class="app-links-grid">
+          <div class="link-group">
+            <h3>Public & Store</h3>
+            <div>
+              <a href="pages/login.html">Sign In</a>
+              <a href="pages/register.html">Join Us</a>
+              <a href="pages/shop.html">Browse Shop</a>
+              <a href="pages/cart.html">View Cart</a>
+            </div>
+          </div>
+
+          <div class="link-group">
+            <h3>Customers</h3>
+            <div>
+              <a href="pages/customer/dashboard.html">My Dashboard</a>
+              <a href="pages/customer/orders.html">Track Orders</a>
+              <a href="pages/customer/profile.html">My Profile</a>
+            </div>
+          </div>
+
+          <div class="link-group">
+            <h3>Operations</h3>
+            <div>
+              <a href="pages/staff/dashboard.html">Staff Panel</a>
+              <a href="pages/admin/dashboard.html">Admin Console</a>
+              <a href="pages/admin/inventory.html">Inventory</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Meet the CEO Section -->
+    <section id="ceo" class="section">
+      <div class="shell">
+        <div class="ceo-grid">
+          <div class="ceo-image-wrapper reveal">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80"
+              alt="CEO of MTH GLOBAL RESOURCES" class="ceo-image">
+            <div class="ceo-badge">
+              <i class="fa-solid fa-quote-right"></i>
+            </div>
+          </div>
+          <div class="ceo-content reveal" style="transition-delay: 0.2s;">
+            <span class="eyebrow"><i class="fa-solid fa-user-tie"></i> Leadership</span>
+            <h2>Meet Our Founder</h2>
+            <p class="lead">Driving quality and consistency in beverage distribution.</p>
+            <p style="margin-bottom: var(--space-md); color: var(--text-muted);">
+              "At MTH GLOBAL RESOURCES, our mission has always been to keep our communities healthy and fully refreshed. We
+              believe that clean drinking water and quality beverages are a baseline standard for everyone. Every bottle we
+              distribute carries our stamp of purity, quality control, and timely delivery."
+            </p>
+            <div class="ceo-signature">
+              <h4
+                style="font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 0.25rem;">
+                M. T. Haruna</h4>
+              <span
+                style="color: var(--secondary); font-weight: 700; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em;">Founder
+                & CEO, MTH GLOBAL RESOURCES</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="section section-alt">
+      <div class="shell">
+        <div class="section-title">
+          <h2>What People Say</h2>
+          <p>Hear from our satisfied customers and partners.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <article class="testimonial-card">
+            <p class="quote-text">"The bottled spring water from MTH is of exceptional quality. It tastes clean, has no mineral aftertaste, and the delivery service to our office is always on schedule."</p>
+            <div class="author">
+              <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80"
+                alt="Customer">
+              <div class="author-info">
+                <h4>Olalekan S.</h4>
+                <span>Ibadan, Oyo State</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="testimonial-card">
+            <p class="quote-text">"Excellent customer support and fast dispatch! MTH Global Resources is my primary distributor for soft drinks for all my retail shops."</p>
+            <div class="author">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80"
+                alt="Customer">
+              <div class="author-info">
+                <h4>Adebayo O.</h4>
+                <span>Lagos, Nigeria</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <div class="shell">
+        <div class="contact-container">
+          <div class="contact-info">
+            <h2>Let's Connect</h2>
+            <p>Have questions or want to partner with us? We'd love to hear from you.</p>
+
+            <div class="contact-details">
+              <div class="contact-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <div>
+                  <strong>Address</strong>
+                  <p>123 Global Way, Ibadan, Oyo State, Nigeria</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <i class="fa-solid fa-phone"></i>
+                <div>
+                  <strong>Phone</strong>
+                  <p>+234 705 137 6943</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <i class="fa-solid fa-envelope"></i>
+                <div>
+                  <strong>Email</strong>
+                  <p>info@mthglobal.com</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form class="contact-form">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="john@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="message">Your Message</label>
+              <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">
+              Send Message <i class="fa-solid fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookieConsent" class="cookie-banner">
+    <div class="cookie-content">
+      <div class="cookie-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+      <div class="cookie-text">
+        <h4>We Value Your Privacy</h4>
+        <p>We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.</p>
+      </div>
+    </div>
+    <div class="cookie-actions">
+      <button id="declineCookies" class="btn-decline">Decline</button>
+      <button id="acceptCookies" class="btn-accept">Accept All</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="#" class="brand">
+            <i class="fa-solid fa-droplet"></i>
+            <span>MTH GLOBAL</span>
+          </a>
+          <p>Providing pure hydration and refreshing carbonated beverages for healthy, active lifestyles.</p>
+        </div>
+
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#products">Our Products</a></li>
+            <li><a href="pages/shop.html">Shop</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4>Account</h4>
+          <ul>
+            <li><a href="pages/login.html">Login</a></li>
+            <li><a href="pages/register.html">Register</a></li>
+            <li><a href="pages/customer/dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="year"></span> MTH GLOBAL RESOURCES. All rights reserved. | <a href="#">Privacy Policy</a> | Developed
+          by <a href="https://adeniyiolalekanportfolio.vercel.app/" target="_blank"
+            rel="noopener noreferrer">Olalekan</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Reveal Animations
+    document.addEventListener("DOMContentLoaded", () => {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      // Dynamically add reveal class to elements
+      const elementsToReveal = document.querySelectorAll('.section-title, .feature-card, .product-card, .link-group, .testimonial-card, .contact-info, .contact-form, .ceo-image-wrapper, .ceo-content');
+      elementsToReveal.forEach((el, index) => {
+        el.classList.add('reveal');
+        // Add slight stagger for siblings
+        if (el.classList.contains('feature-card') || el.classList.contains('product-card') || el.classList.contains('link-group') || el.classList.contains('testimonial-card')) {
+          el.style.transitionDelay = `${(index % 4) * 0.1}s`;
+        }
+        observer.observe(el);
+      });
+
+      // Observe manually added reveal elements
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    });
+
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch(err => {
+            console.log('ServiceWorker registration failed: ', err);
+          });
+      });
+    }
+
+    // PWA Custom Install Prompt
+    let deferredPrompt;
+    const installBtn = document.getElementById('installAppBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      deferredPrompt = e;
+      // Update UI notify the user they can install the PWA
+      installBtn.style.display = 'inline-flex';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to the install prompt: ${outcome}`);
+        // We've used the prompt, and can't use it again, throw it away
+        deferredPrompt = null;
+        installBtn.style.display = 'none';
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      installBtn.style.display = 'none';
+      console.log('PWA was installed');
+    });
+
+    // Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.querySelector('.nav-links');
+    const mobileIcon = mobileBtn.querySelector('i');
+
+    const toggleMenu = () => {
+      navLinks.classList.toggle('active');
+      if (navLinks.classList.contains('active')) {
+        mobileIcon.classList.remove('fa-bars');
+        mobileIcon.classList.add('fa-xmark');
+      } else {
+        mobileIcon.classList.remove('fa-xmark');
+        mobileIcon.classList.add('fa-bars');
+      }
+    };
+
+    mobileBtn.addEventListener('click', toggleMenu);
+
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+          toggleMenu();
+        }
+      });
+    });
+
+    // Carousel Logic
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.dot');
+    const prevBtn = document.getElementById('prevSlide');
+    const nextBtn = document.getElementById('nextSlide');
+    let currentSlide = 0;
+    let slideInterval;
+
+    const showSlide = (index) => {
+      slides.forEach(s => s.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
+      slides[index].classList.add('active');
+      dots[index].classList.add('active');
+    };
+
+    const nextSlide = () => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    };
+
+    const prevSlideFn = () => {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    };
+
+    const resetInterval = () => {
+      clearInterval(slideInterval);
+      slideInterval = setInterval(nextSlide, 5000);
+    };
+
+    nextBtn.addEventListener('click', () => {
+      nextSlide();
+      resetInterval();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      prevSlideFn();
+      resetInterval();
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        currentSlide = index;
+        showSlide(currentSlide);
+        resetInterval();
+      });
+    });
+
+    // Start autoplay
+    resetInterval();
+
+    // Set dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Cookie Consent Logic
+    const cookieBanner = document.getElementById('cookieConsent');
+    const acceptBtn = document.getElementById('acceptCookies');
+    const declineBtn = document.getElementById('declineCookies');
+
+    const initCookieBanner = () => {
+      const cookieConsent = localStorage.getItem('mth_cookie_consent');
+      if (!cookieConsent) {
+        setTimeout(() => {
+          cookieBanner.classList.add('show');
+        }, 1500); // Show after 1.5 seconds
+      }
+    };
+
+    const handleCookieConsent = (consent) => {
+      localStorage.setItem('mth_cookie_consent', consent);
+      cookieBanner.classList.remove('show');
+      
+      if(consent === 'accepted') {
+        console.log('Cookies accepted. Initialize analytics, etc.');
+        initBehaviorTracking();
+      } else {
+        console.log('Cookies declined. Only essential cookies allowed.');
+        localStorage.removeItem('mth_user_prefs');
+        renderSuggestions();
+      }
+    };
+
+    // Behavior Tracking & Suggestions Logic
+    const initBehaviorTracking = () => {
+      // Don't track if they haven't accepted cookies
+      if (localStorage.getItem('mth_cookie_consent') !== 'accepted') return;
+
+      const trackElements = document.querySelectorAll('.track-behavior');
+      trackElements.forEach(el => {
+        // Prevent duplicate listeners
+        if (el.dataset.trackingInitialized) return;
+        el.dataset.trackingInitialized = true;
+        
+        el.addEventListener('click', () => {
+          const category = el.getAttribute('data-category');
+          if (category) {
+            let userPrefs = JSON.parse(localStorage.getItem('mth_user_prefs') || '{}');
+            userPrefs[category] = (userPrefs[category] || 0) + 1;
+            localStorage.setItem('mth_user_prefs', JSON.stringify(userPrefs));
+            renderSuggestions();
+          }
+        });
+      });
+    };
+
+    const renderSuggestions = () => {
+      const prefsStr = localStorage.getItem('mth_user_prefs');
+      const suggestedSection = document.getElementById('suggested-products');
+      if (!prefsStr || localStorage.getItem('mth_cookie_consent') !== 'accepted') {
+        if (suggestedSection) suggestedSection.style.display = 'none';
+        return;
+      }
+      
+      const userPrefs = JSON.parse(prefsStr);
+      let topCategory = null;
+      let maxScore = 0;
+      for (const [category, score] of Object.entries(userPrefs)) {
+        if (score > maxScore) {
+          maxScore = score;
+          topCategory = category;
+        }
+      }
+
+      if (topCategory && maxScore > 0) {
+        const container = document.getElementById('suggested-container');
+        if (suggestedSection && container) {
+          suggestedSection.style.display = 'block';
+          
+          const productsDB = {
+            'water': [
+              { title: 'MTH Premium Spring Water', desc: 'Pure spring water 75cl x 12 Pack', img: 'https://images.unsplash.com/photo-1608885898957-a599fb1bf88d?auto=format&fit=crop&w=600&q=80' },
+              { title: 'Pure Alkaline Ionized Water', desc: 'Alkaline water 1.5L x 6 Pack', img: 'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=600&q=80' }
+            ],
+            'soft drinks': [
+              { title: 'Classic Cola Soft Drink', desc: 'Refreshing cola soda 50cl x 12 Pack', img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80' },
+              { title: 'Zesty Orange Soda', desc: 'Carbonated orange soda 50cl x 12 Pack', img: 'https://images.unsplash.com/photo-1567103472667-6898f3a83cf2?auto=format&fit=crop&w=600&q=80' }
+            ]
+          };
+
+          const suggestions = productsDB[topCategory] || productsDB['water'];
+          
+          container.innerHTML = suggestions.map((prod, idx) => `
+            <article class="product-card reveal active" style="transition-delay: ${idx * 0.1}s">
+              <img src="${prod.img}" alt="${prod.title}">
+              <div class="product-info">
+                <h3>${prod.title}</h3>
+                <p>${prod.desc}</p>
+                <a href="pages/shop.html" class="btn btn-primary btn-small" style="margin-top: 1rem;">View Details</a>
+              </div>
+            </article>
+          `).join('');
+        }
+      }
+    };
+
+    if (acceptBtn && declineBtn) {
+      acceptBtn.addEventListener('click', () => handleCookieConsent('accepted'));
+      declineBtn.addEventListener('click', () => handleCookieConsent('declined'));
+      
+      // Initialize on load
+      window.addEventListener('load', () => {
+        initCookieBanner();
+        if (localStorage.getItem('mth_cookie_consent') === 'accepted') {
+          initBehaviorTracking();
+          renderSuggestions();
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports | MTH GLOBAL RESOURCES Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .header-banner { background: linear-gradient(135deg,var(--primary-dark),var(--primary)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; color:white; display:flex; align-items:center; justify-content:space-between; }
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; }
+    .stat-card { background:var(--bg-card); padding:1.75rem; border-radius:var(--radius-lg); border:1px solid var(--border-color); box-shadow:var(--shadow-sm); text-align:center; }
+    .stat-card .icon { font-size:2rem; margin-bottom:1rem; }
+    .stat-card .val { font-size:2.25rem; font-weight:800; color:var(--primary-dark); margin-bottom:.25rem; }
+    .stat-card small { color:var(--text-muted); font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;color:white;">Business Reports</h1>
+        <p style="margin:.5rem 0 0;opacity:.9;">A complete summary of MTH GLOBAL RESOURCES performance metrics.</p>
+      </div>
+      <i class="fa-solid fa-chart-line" style="font-size:3.5rem;opacity:.2;"></i>
+    </div>
+
+    <div class="stats-grid" id="report-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+    </div>
+  </main>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/admin-layout.js"></script>
+  <script>
+    mountAdminLayout();
+    authRequired().then(async () => {
+      const grid = document.getElementById('report-grid');
+      try {
+        const s = await api("reports.summary");
+        const fmt = v => '₦' + Number(v).toLocaleString('en-NG', {minimumFractionDigits:2});
+        const cards = [
+          { icon:'fa-users', label:'Total Users', val: s.total_users, color:'#1d4ed8' },
+          { icon:'fa-bottle-water', label:'Total Products', val: s.total_products, color:'#0e7490' },
+          { icon:'fa-box-open', label:'Total Orders', val: s.total_orders, color:'#b45309' },
+          { icon:'fa-circle-check', label:'Paid Orders', val: s.paid_orders, color:'#047857' },
+          { icon:'fa-arrow-trend-up', label:'Total Income', val: fmt(s.income_total), color:'#047857' },
+          { icon:'fa-arrow-trend-down', label:'Total Expenses', val: fmt(s.expense_total), color:'#b91c1c' },
+        ];
+        grid.innerHTML = cards.map(c => `
+          <div class="stat-card">
+            <div class="icon"><i class="fa-solid ${c.icon}" style="color:${c.color};"></i></div>
+            <div class="val" style="color:${c.color};">${c.val}</div>
+            <small>${c.label}</small>
+          </div>
+        `).join('');
+      } catch(e) {
+        grid.innerHTML = `<p style="color:red;text-align:center;">Error loading reports: ${e.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

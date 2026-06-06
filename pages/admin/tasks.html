@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks | MTH GLOBAL RESOURCES Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .header-banner { background: linear-gradient(135deg,var(--bg-card),var(--bg-alt)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; border:1px solid var(--border-color); display:flex; align-items:center; gap:1.5rem; }
+    .header-icon { background:rgba(139,92,246,0.1); color:#6d28d9; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--bg-card); border-radius:var(--radius-lg); padding:2rem; width:90%; max-width:500px; box-shadow:var(--shadow-lg); }
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:.875rem; font-weight:600; margin-bottom:.4rem; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:.7rem 1rem; border:1px solid var(--border-color); border-radius:var(--radius-md); font-family:'Inter',sans-serif; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div class="header-icon"><i class="fa-solid fa-list-check"></i></div>
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;">Operations Tasks</h1>
+        <p style="margin:.5rem 0 0;color:var(--text-muted);">Create and assign tasks to your operations staff.</p>
+      </div>
+    </div>
+    <section class="card">
+      <div class="toolbar" style="justify-content:space-between;margin-bottom:1.5rem;">
+        <h2 style="font-size:1.25rem;margin:0;">All Tasks</h2>
+        <button class="btn btn-primary btn-small" onclick="openModal()"><i class="fa-solid fa-plus"></i> Create Task</button>
+      </div>
+      <div id="tasks-container">
+        <div style="text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3 style="margin:0;">Create Task</h3>
+        <button onclick="closeModal()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group"><label>Task Title</label><input type="text" id="f-title" placeholder="e.g. Check warehouse temperature levels"></div>
+      <div class="form-group"><label>Description</label><textarea id="f-desc" rows="2" placeholder="Details..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Priority</label>
+          <select id="f-priority"><option>Low</option><option selected>Medium</option><option>High</option><option>Urgent</option></select>
+        </div>
+        <div class="form-group"><label>Due Date</label><input type="date" id="f-due"></div>
+      </div>
+      <div class="form-group"><label>Staff ID (optional)</label><input type="number" id="f-staff" placeholder="Assign to staff user ID"></div>
+      <div style="display:flex;gap:1rem;margin-top:1rem;">
+        <button class="btn btn-primary" onclick="saveTask()" style="flex:2;">Save Task</button>
+        <button class="btn secondary" onclick="closeModal()" style="flex:1;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/admin-layout.js"></script>
+  <script>
+    mountAdminLayout();
+    authRequired().then(load);
+
+    function openModal() { document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    async function load() {
+      const container = document.getElementById('tasks-container');
+      try {
+        const rows = await api("tasks.list");
+        if (!rows.length) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem;">No tasks yet.</p>'; return; }
+        const priorityColor = { Low:'#6b7280', Medium:'#b45309', High:'#1d4ed8', Urgent:'#b91c1c' };
+        const statusColor = { Todo:'#6b7280', 'In Progress':'#1d4ed8', Done:'#047857' };
+        container.innerHTML = `<div class="table-responsive"><table>
+          <thead><tr><th>Title</th><th>Priority</th><th>Status</th><th>Due Date</th><th>Update Status</th></tr></thead>
+          <tbody>${rows.map(t => `<tr>
+            <td><strong>${t.title}</strong><br><small style="color:var(--text-muted);">${t.description||''}</small></td>
+            <td style="color:${priorityColor[t.priority]||'#6b7280'};font-weight:600;">${t.priority}</td>
+            <td style="color:${statusColor[t.status]||'#6b7280'};font-weight:600;">${t.status}</td>
+            <td>${t.due_date ? new Date(t.due_date).toLocaleDateString() : '—'}</td>
+            <td>
+              <select onchange="updateStatus(${t.id},this.value)" style="padding:.4rem .75rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-size:.85rem;">
+                ${['Todo','In Progress','Done'].map(s=>`<option ${t.status===s?'selected':''}>${s}</option>`).join('')}
+              </select>
+            </td>
+          </tr>`).join('')}</tbody>
+        </table></div>`;
+      } catch(e) { container.innerHTML = `<p style="color:red;text-align:center;">Error: ${e.message}</p>`; }
+    }
+
+    async function saveTask() {
+      const title = document.getElementById('f-title').value.trim();
+      const description = document.getElementById('f-desc').value.trim();
+      const priority = document.getElementById('f-priority').value;
+      const due_date = document.getElementById('f-due').value;
+      const staff_id = parseInt(document.getElementById('f-staff').value) || null;
+      if (!title) { toast('Title is required.'); return; }
+      try {
+        await api("tasks.create", "POST", {title, description, priority, due_date, staff_id});
+        closeModal(); load();
+      } catch(e) { toast("Error: " + e.message); }
+    }
+
+    async function updateStatus(task_id, status) {
+      try {
+        await api("tasks.update.status", "POST", {task_id, status});
+        load();
+      } catch(e) { toast("Failed: " + e.message); }
+    }
+  </script>
+</body>
+</html>

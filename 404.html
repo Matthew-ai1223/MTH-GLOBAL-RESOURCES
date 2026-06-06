@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found | MTH GLOBAL RESOURCES</title>
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e3a8a">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Styles -->
+  <script>
+    // Dynamic base tag to handle both Vercel (root) and Local XAMPP (subfolder)
+    (function() {
+      const path = window.location.pathname;
+      const base = path.includes('/nu-farm/') 
+        ? path.split('/nu-farm/')[0] + '/nu-farm/' 
+        : '/';
+      document.write('<base href="' + base + '">');
+    })();
+  </script>
+  <link rel="stylesheet" href="assets/styles.css">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at top right, #eff6ff, transparent),
+                  radial-gradient(circle at bottom left, #f0f9ff, transparent);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .error-container {
+      text-align: center;
+      z-index: 10;
+      padding: var(--space-xl);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: var(--shadow-xl);
+      max-width: 600px;
+      width: 90%;
+      animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .error-code {
+      font-size: 8rem;
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 0;
+      line-height: 1;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+
+    .error-title {
+      font-size: 2rem;
+      color: var(--primary-dark);
+      margin-bottom: var(--space-md);
+    }
+
+    .error-text {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .error-actions {
+      display: flex;
+      gap: var(--space-md);
+      justify-content: center;
+    }
+
+    .illustration {
+      font-size: 4rem;
+      color: var(--accent);
+      margin-bottom: var(--space-md);
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .blob-bg {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: var(--accent);
+      filter: blur(80px);
+      opacity: 0.15;
+      border-radius: 50%;
+      z-index: 1;
+      animation: float-slow 15s infinite alternate;
+    }
+
+    .blob-bg-2 {
+      position: absolute;
+      bottom: -10%;
+      left: -10%;
+      width: 300px;
+      height: 300px;
+      background: var(--secondary);
+      filter: blur(80px);
+      opacity: 0.15;
+      border-radius: 50%;
+      z-index: 1;
+      animation: float-slow 12s infinite alternate-reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    @media (max-width: 600px) {
+      .error-code { font-size: 5rem; }
+      .error-title { font-size: 1.5rem; }
+      .error-actions { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="blob-bg"></div>
+  <div class="blob-bg-2"></div>
+
+  <div class="error-container">
+    <div class="illustration">
+      <i class="fa-solid fa-bottle-water"></i>
+    </div>
+    <span class="error-code">404</span>
+    <h1 class="error-title">Oops! Page Not Found.</h1>
+    <p class="error-text">
+      The page you're looking for seems to have dried up or was never filled. 
+      Let's get you back to a refreshing place.
+    </p>
+    <div class="error-actions">
+      <a href="index.html" class="btn btn-primary">
+        <i class="fa-solid fa-house"></i> Back to Home
+      </a>
+      <a href="pages/shop.html" class="btn btn-ghost">
+        <i class="fa-solid fa-cart-shopping"></i> Visit Shop
+      </a>
+    </div>
+  </div>
+
+  <script>
+    // Just a small touch to track the mouse for a subtle effect
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      const blobs = document.querySelectorAll('.blob-bg, .blob-bg-2');
+      blobs.forEach((blob, i) => {
+        const speed = (i + 1) * 20;
+        blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+      });
+    });
+  </script>
+</body>
+
+</html>

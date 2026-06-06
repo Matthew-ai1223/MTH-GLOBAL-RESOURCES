@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tasks | MTH GLOBAL RESOURCES Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .header-banner { background: linear-gradient(135deg,var(--bg-card),var(--bg-alt)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; border:1px solid var(--border-color); display:flex; align-items:center; gap:1.5rem; }
+    .header-icon { background:rgba(139,92,246,0.1); color:#6d28d9; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+    .task-card { background:var(--bg-card); border:1px solid var(--border-color); border-radius:var(--radius-lg); padding:1.5rem; margin-bottom:1rem; display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+    .task-card.done { opacity:.6; }
+    .priority-High { border-left:4px solid #1d4ed8; }
+    .priority-Urgent { border-left:4px solid #b91c1c; }
+    .priority-Medium { border-left:4px solid #b45309; }
+    .priority-Low { border-left:4px solid #6b7280; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div class="header-icon"><i class="fa-solid fa-list-check"></i></div>
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;">My Tasks</h1>
+        <p style="margin:.5rem 0 0;color:var(--text-muted);">Tasks assigned to you by admin.</p>
+      </div>
+    </div>
+    <div id="tasks-container">
+      <div style="text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+    </div>
+  </main>
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/layout.js"></script>
+  <script src="../../assets/js/pages/common.js"></script>
+  <script>
+    mountLayout();
+    authRequired().then(load);
+
+    async function load() {
+      const container = document.getElementById('tasks-container');
+      try {
+        const rows = await api("tasks.list");
+        if (!rows.length) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:4rem;">You have no tasks assigned yet!</p>'; return; }
+        const priorityColor = { Low:'#6b7280', Medium:'#b45309', High:'#1d4ed8', Urgent:'#b91c1c' };
+        container.innerHTML = rows.map(t => `
+          <div class="task-card priority-${t.priority} ${t.status==='Done'?'done':''}">
+            <div style="flex-grow:1;">
+              <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin-bottom:.5rem;">
+                <strong style="font-size:1rem;">${t.title}</strong>
+                <span style="font-size:.75rem;font-weight:700;color:${priorityColor[t.priority]||'#6b7280'};">${t.priority}</span>
+              </div>
+              ${t.description ? `<p style="margin:0 0 .5rem;color:var(--text-muted);font-size:.9rem;">${t.description}</p>` : ''}
+              ${t.due_date ? `<small style="color:var(--text-muted);"><i class="fa-regular fa-calendar"></i> Due: ${new Date(t.due_date).toLocaleDateString()}</small>` : ''}
+            </div>
+            <div>
+              <select onchange="updateStatus(${t.id},this.value)" style="padding:.5rem .75rem;border:1px solid var(--border-color);border-radius:var(--radius-md);font-family:'Inter',sans-serif;font-size:.85rem;">
+                ${['Todo','In Progress','Done'].map(s=>`<option ${t.status===s?'selected':''}>${s}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) { container.innerHTML = `<p style="color:red;text-align:center;">Error: ${e.message}</p>`; }
+    }
+
+    async function updateStatus(task_id, status) {
+      try {
+        await api("tasks.update.status", "POST", {task_id, status});
+        load();
+      } catch(e) { toast("Failed: " + e.message); }
+    }
+  </script>
+</body>
+</html>

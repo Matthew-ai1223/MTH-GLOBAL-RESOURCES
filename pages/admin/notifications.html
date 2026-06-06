@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications | MTH GLOBAL RESOURCES Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .header-banner { background: linear-gradient(135deg,var(--bg-card),var(--bg-alt)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; border:1px solid var(--border-color); display:flex; align-items:center; gap:1.5rem; }
+    .header-icon { background:rgba(245,158,11,0.1); color:#b45309; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+    .notif-item { display:flex; align-items:flex-start; gap:1rem; padding:1.25rem; border:1px solid var(--border-color); border-radius:var(--radius-md); background:var(--bg-card); margin-bottom:1rem; }
+    .notif-icon { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--bg-card); border-radius:var(--radius-lg); padding:2rem; width:90%; max-width:480px; box-shadow:var(--shadow-lg); }
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:.875rem; font-weight:600; margin-bottom:.4rem; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:.7rem 1rem; border:1px solid var(--border-color); border-radius:var(--radius-md); font-family:'Inter',sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div class="header-icon"><i class="fa-solid fa-bell"></i></div>
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;">Notifications</h1>
+        <p style="margin:.5rem 0 0;color:var(--text-muted);">Broadcast system notifications to users.</p>
+      </div>
+    </div>
+    <section class="card">
+      <div class="toolbar" style="justify-content:space-between;margin-bottom:1.5rem;">
+        <h2 style="font-size:1.25rem;margin:0;">Recent Notifications</h2>
+        <button class="btn btn-primary btn-small" onclick="openModal()"><i class="fa-solid fa-plus"></i> Send Notification</button>
+      </div>
+      <div id="notifs-container">
+        <div style="text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3 style="margin:0;">Send Notification</h3>
+        <button onclick="closeModal()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group"><label>Title</label><input type="text" id="f-title" placeholder="e.g. System Update"></div>
+      <div class="form-group"><label>Message</label><textarea id="f-body" rows="3" placeholder="Notification body..."></textarea></div>
+      <div class="form-group"><label>Type</label>
+        <select id="f-type"><option>info</option><option>warning</option><option>success</option><option>error</option></select>
+      </div>
+      <div class="form-group"><label>User ID (leave blank to broadcast to all)</label><input type="number" id="f-user" placeholder="Optional specific user ID"></div>
+      <div style="display:flex;gap:1rem;margin-top:1rem;">
+        <button class="btn btn-primary" onclick="send()" style="flex:2;">Send</button>
+        <button class="btn secondary" onclick="closeModal()" style="flex:1;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/admin-layout.js"></script>
+  <script>
+    mountAdminLayout();
+    authRequired().then(load);
+
+    function openModal() { document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    async function load() {
+      const container = document.getElementById('notifs-container');
+      try {
+        const rows = await api("notifications.list");
+        if (!rows.length) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem;">No notifications yet.</p>'; return; }
+        const typeColor = { info:'rgba(59,130,246,0.1)', warning:'rgba(245,158,11,0.1)', success:'rgba(16,185,129,0.1)', error:'rgba(239,68,68,0.1)' };
+        const typeIcon = { info:'fa-info-circle', warning:'fa-triangle-exclamation', success:'fa-check-circle', error:'fa-circle-exclamation' };
+        const typeText = { info:'#1d4ed8', warning:'#b45309', success:'#047857', error:'#b91c1c' };
+        container.innerHTML = rows.map(n => `
+          <div class="notif-item">
+            <div class="notif-icon" style="background:${typeColor[n.type]||typeColor.info};">
+              <i class="fa-solid ${typeIcon[n.type]||typeIcon.info}" style="color:${typeText[n.type]||typeText.info};font-size:1.1rem;"></i>
+            </div>
+            <div style="flex-grow:1;">
+              <strong>${n.title}</strong>
+              <p style="margin:.25rem 0 0;color:var(--text-muted);font-size:.9rem;">${n.body}</p>
+            </div>
+            <small style="color:var(--text-muted);white-space:nowrap;">${new Date(n.created_at).toLocaleDateString()}</small>
+          </div>
+        `).join('');
+      } catch(e) { container.innerHTML = `<p style="color:red;text-align:center;">Error: ${e.message}</p>`; }
+    }
+
+    async function send() {
+      const title = document.getElementById('f-title').value.trim();
+      const body = document.getElementById('f-body').value.trim();
+      const type = document.getElementById('f-type').value;
+      const user_id = parseInt(document.getElementById('f-user').value) || null;
+      if (!title || !body) { toast('Title and message are required.'); return; }
+      try {
+        await api("notifications.create", "POST", {title, body, type, user_id});
+        closeModal(); load();
+      } catch(e) { toast("Error: " + e.message); }
+    }
+  </script>
+</body>
+</html>

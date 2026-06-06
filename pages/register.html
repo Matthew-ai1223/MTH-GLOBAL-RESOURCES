@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | MTH GLOBAL RESOURCES</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auth-container {
+      max-width: 500px;
+      width: 100%;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
+
+    .auth-card {
+      background: var(--bg-card);
+      padding: 2.5rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border-color);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-header .brand {
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .auth-header h1 {
+      font-size: 1.75rem;
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-header p {
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding-left: 2.75rem;
+    }
+
+    .auth-footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Step visibility */
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    /* Verification Code Input */
+    .otp-container {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+
+    .otp-input {
+      width: 50px;
+      height: 60px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-alt);
+    }
+
+    .otp-input:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="layout"></div>
+
+  <main class="auth-container">
+    <div class="auth-card">
+      <div class="auth-header">
+        <a href="../index.html" class="brand">
+          <i class="fa-solid fa-droplet"></i> MTH GLOBAL RESOURCES
+        </a>
+        <h1 id="authTitle">Create Account</h1>
+        <p id="authDesc">Join the MTH GLOBAL RESOURCES community today</p>
+      </div>
+
+      <!-- Step 1: Registration Form -->
+      <form id="registerForm" class="step active">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-user"></i>
+            <input name="name" id="name" type="text" placeholder="John Doe" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-envelope"></i>
+            <input name="email" id="email" type="email" placeholder="name@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-phone"></i>
+            <input name="phone" id="phone" type="tel" placeholder="+234 123 4567" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input name="password" id="password" type="password" placeholder="Min. 8 characters" required>
+          </div>
+        </div>
+
+        <div style="margin: 1.5rem 0; font-size: 0.85rem; color: var(--text-muted);">
+          By creating an account, you agree to our <a href="#" style="color: var(--primary);">Terms of Service</a> and
+          <a href="#" style="color: var(--primary);">Privacy Policy</a>.
+        </div>
+
+        <button type="submit" style="width: 100%;">
+          Create Account <i class="fa-solid fa-user-plus"></i>
+        </button>
+      </form>
+
+      <!-- Step 2: Verification Form -->
+      <form id="verifyForm" class="step">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <p>We've sent a 6-digit verification code to <strong id="sent-email">...</strong></p>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Please enter the code below to
+            verify your account.</p>
+        </div>
+
+        <div class="otp-container">
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+          <input type="text" maxlength="1" class="otp-input" required>
+        </div>
+
+        <button type="submit" style="width: 100%;" id="verifyBtn">
+          Verify Account <i class="fa-solid fa-circle-check"></i>
+        </button>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+          <button type="button" id="resendBtn" class="btn secondary btn-small"
+            style="background: none; border: none; color: var(--primary); font-weight: 600;">
+            Resend Code
+          </button>
+          <p id="resendTimer" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; display: none;">
+            Resend available in <span id="timerVal">30</span>s
+          </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 1.5rem;">
+          <a href="javascript:location.reload()" style="font-size: 0.85rem; color: var(--text-muted);">Entered wrong
+            info? Go back</a>
+        </div>
+      </form>
+
+      <div class="auth-footer" id="authFooter">
+        <p>Already registered? <a href="./login.html">Sign In</a></p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/api-client.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    mountLayout();
+
+    const registerForm = document.getElementById("registerForm");
+    const verifyForm = document.getElementById("verifyForm");
+    const authTitle = document.getElementById("authTitle");
+    const authDesc = document.getElementById("authDesc");
+    const authFooter = document.getElementById("authFooter");
+    const resendBtn = document.getElementById("resendBtn");
+    const resendTimer = document.getElementById("resendTimer");
+    const timerVal = document.getElementById("timerVal");
+    const sentEmailSpan = document.getElementById("sent-email");
+
+    let userEmail = "";
+
+    // Check for auto-verification redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    const verifyEmail = urlParams.get('verify');
+    if (verifyEmail) {
+      userEmail = verifyEmail;
+      sentEmailSpan.textContent = userEmail;
+      registerForm.classList.remove('active');
+      verifyForm.classList.add('active');
+      authTitle.textContent = "Verify Account";
+      authDesc.textContent = "Please enter your verification code";
+      authFooter.style.display = 'none';
+      setTimeout(() => otpInputs[0].focus(), 100);
+    }
+
+    // Handle Registration
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Creating account...';
+
+      try {
+        const fd = new FormData(e.target);
+        const data = Object.fromEntries(fd.entries());
+        userEmail = data.email;
+
+        const res = await api("auth.register", "POST", data);
+
+        // Success! Move to verification step
+        sentEmailSpan.textContent = userEmail;
+        registerForm.classList.remove('active');
+        verifyForm.classList.add('active');
+        authTitle.textContent = "Verify Account";
+        authDesc.textContent = "Just one more step to get started";
+        authFooter.style.display = 'none';
+
+        // Auto-focus first OTP input
+        setTimeout(() => document.querySelector('.otp-input').focus(), 100);
+
+        // FOR DEMO: If code is returned, toast it
+        if (res.code) toast("Your verification code is " + res.code, "info", "Verification Code");
+
+      } catch (err) {
+        toast(err.message || "Registration failed. Please try again.", "error");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Create Account <i class="fa-solid fa-user-plus"></i>';
+      }
+    });
+
+    // Handle OTP input navigation
+    const otpInputs = document.querySelectorAll('.otp-input');
+    otpInputs.forEach((input, index) => {
+      input.addEventListener('input', (e) => {
+        if (e.target.value && index < otpInputs.length - 1) {
+          otpInputs[index + 1].focus();
+        }
+      });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          otpInputs[index - 1].focus();
+        }
+      });
+    });
+
+    // Handle Verification
+    verifyForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const verifyBtn = document.getElementById('verifyBtn');
+      const code = Array.from(otpInputs).map(i => i.value).join('');
+
+      if (code.length < 6) {
+        toast("Please enter the full 6-digit code.");
+        return;
+      }
+
+      verifyBtn.disabled = true;
+      verifyBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying...';
+
+      try {
+        await api("auth.verify", "POST", { email: userEmail, code });
+        toast("Verification successful! You can now log in.", "success");
+        setTimeout(() => {
+          location.href = "./login.html";
+        }, 1500);
+      } catch (err) {
+        toast(err.message || "Verification failed. Please check the code.", "error");
+        verifyBtn.disabled = false;
+        verifyBtn.innerHTML = 'Verify Account <i class="fa-solid fa-circle-check"></i>';
+        // Clear inputs on failure
+        otpInputs.forEach(i => i.value = "");
+        otpInputs[0].focus();
+      }
+    });
+
+    // Resend Logic
+    let timerInterval;
+    function startResendTimer() {
+      let count = 30;
+      resendBtn.style.display = 'none';
+      resendTimer.style.display = 'block';
+      timerVal.textContent = count;
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        count--;
+        timerVal.textContent = count;
+        if (count <= 0) {
+          clearInterval(timerInterval);
+          resendBtn.style.display = 'inline-block';
+          resendTimer.style.display = 'none';
+        }
+      }, 1000);
+    }
+
+    resendBtn.onclick = async () => {
+      try {
+        await api("auth.resend", "POST", { email: userEmail });
+        toast("New verification code sent to your email.", "success");
+        startResendTimer();
+      } catch (err) {
+        toast(err.message, "error");
+      }
+    };
+  </script>
+</body>
+
+</html>

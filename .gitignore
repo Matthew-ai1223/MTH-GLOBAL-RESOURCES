@@ -1,0 +1,3 @@
+# Local configuration files containing secrets
+backend/config.local.php
+.env

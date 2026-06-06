@@ -1,0 +1,1401 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop | MTH GLOBAL RESOURCES</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <style>
+    .shop-header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+      padding: 4rem 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2.5rem;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .shop-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1.5" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+      z-index: 1;
+    }
+
+    .shop-header::after {
+      content: '\f4d8';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: -5%;
+      top: 50%;
+      transform: translateY(-50%) rotate(15deg);
+      font-size: 18rem;
+      opacity: 0.05;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .shop-header-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .shop-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .shop-header p {
+      font-size: 1.15rem;
+      opacity: 0.9;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* E-commerce Layout */
+    .shop-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    /* Sticky Mobile Controls Bar & Category Slider Styles */
+    .mobile-controls-wrapper {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-controls-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        background: var(--bg-main);
+        padding: 0.75rem 0;
+        position: sticky;
+        top: 54px; /* Sticks perfectly below the layout's top navigation bar */
+        z-index: 90;
+        margin-bottom: 1.25rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .mobile-controls-bar {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        padding: 0 0.5rem;
+      }
+
+      .mobile-search-compact {
+        position: relative;
+        flex: 1;
+      }
+
+      .mobile-search-compact i {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .mobile-search-compact input {
+        width: 100%;
+        padding: 0.65rem 1rem 0.65rem 2.5rem;
+        border: 1px solid var(--border-color);
+        border-radius: 99px; /* Pill style */
+        font-size: 0.9rem;
+        background: var(--bg-card);
+        font-family: 'Inter', sans-serif;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+      }
+
+      .mobile-search-compact input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+      }
+
+      .btn-filter-trigger {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.65rem 1.25rem;
+        border: 1px solid var(--border-color);
+        border-radius: 99px;
+        background: var(--bg-card);
+        color: var(--text-main);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        white-space: nowrap;
+      }
+
+      .btn-filter-trigger:hover, .btn-filter-trigger:active {
+        background: var(--bg-alt);
+        border-color: var(--text-muted);
+      }
+
+      .btn-filter-trigger i {
+        color: var(--primary);
+      }
+
+      .active-filter-badge {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent);
+        color: var(--primary-dark);
+        font-size: 0.75rem;
+        font-weight: 700;
+        min-width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        padding: 0 4px;
+        box-shadow: 0 2px 4px rgba(132, 204, 22, 0.3);
+      }
+
+      .active-filter-badge.show {
+        display: inline-flex;
+      }
+
+      /* Horizontal Category Pill Slider */
+      .mobile-category-slider-wrapper {
+        width: 100%;
+        overflow: hidden;
+        padding: 0 0.5rem;
+      }
+
+      .mobile-category-slider {
+        display: flex;
+        gap: 0.5rem;
+        overflow-x: auto;
+        scrollbar-width: none; /* Firefox */
+        padding-bottom: 0.25rem;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .mobile-category-slider::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+      }
+
+      .mobile-cat-pill {
+        flex: 0 0 auto;
+        padding: 0.5rem 1.1rem;
+        border-radius: 99px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: 'Inter', sans-serif;
+      }
+
+      .mobile-cat-pill:active {
+        transform: scale(0.95);
+      }
+
+      .mobile-cat-pill.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .shop-layout {
+        grid-template-columns: 1fr;
+      }
+
+      /* Premium Bottom Sheet Filter Drawer */
+      .shop-sidebar {
+        position: fixed !important;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: fit-content;
+        max-height: 85vh;
+        overflow-y: auto;
+        z-index: 1010;
+        border-radius: 24px 24px 0 0;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+        box-shadow: 0 -10px 40px rgba(2, 44, 34, 0.15);
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        border: none;
+        border-top: 1px solid var(--border-color);
+        visibility: hidden;
+      }
+      
+      .shop-sidebar > button#applyFiltersBtn {
+        margin-top: 1.5rem;
+        margin-bottom: env(safe-area-inset-bottom, 1rem);
+      }
+      
+      /* Add a drag handle indicator for the bottom sheet */
+      .shop-sidebar::before {
+        content: '';
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 5px;
+        background: var(--border-color);
+        border-radius: 10px;
+      }
+
+      .shop-sidebar.is-open {
+        transform: translateY(0);
+        visibility: visible;
+      }
+
+      /* Blur and overlay modern backdrop */
+      .shop-sidebar-overlay {
+        display: block !important;
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 44, 34, 0.4);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.35s ease;
+      }
+
+      .shop-sidebar-overlay.is-open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      /* Adjust containers padding when FAB is replaced by sticky top bar */
+      .container {
+        padding-bottom: 2rem;
+      }
+
+      .sidebar-close-btn {
+        display: flex !important;
+      }
+
+      .sidebar-mobile-header {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .sidebar-mobile-header h3 {
+        font-size: 1.15rem;
+        margin: 0;
+        font-weight: 700;
+        color: var(--primary-dark);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .sidebar-mobile-header h3 i {
+        color: var(--primary);
+      }
+
+      .sidebar-clear-btn {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #ef4444;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.25rem 0.5rem;
+        border-radius: 6px;
+        transition: var(--transition);
+      }
+
+      .sidebar-clear-btn:hover {
+        background: rgba(239, 68, 68, 0.05);
+      }
+
+      .sidebar-desktop-header {
+        display: none !important;
+      }
+    }
+
+    .sidebar-mobile-header {
+      display: none;
+    }
+
+    .sidebar-desktop-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-close-btn {
+      display: none;
+      background: var(--bg-alt);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      transition: var(--transition);
+    }
+
+    .sidebar-close-btn:hover {
+      background: var(--border-color);
+      color: var(--primary);
+    }
+
+    .shop-sidebar-overlay {
+      display: none;
+    }
+
+    /* Sidebar Filters */
+    .shop-sidebar {
+      background: var(--bg-card);
+      padding: 1.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .filter-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .filter-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Search Input */
+    .search-input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .search-input-wrapper input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-family: 'Inter', sans-serif;
+      transition: var(--transition);
+    }
+
+    .search-input-wrapper input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+    }
+
+    /* Category List */
+    .category-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .category-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-md);
+      background: transparent;
+      margin-bottom: 0.25rem;
+    }
+
+    .category-item:hover {
+      background: var(--bg-alt);
+      color: var(--text-main);
+    }
+
+    .category-item.active {
+      background: rgba(132, 204, 22, 0.1);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .category-item i {
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: var(--transition);
+      transform: translateX(-5px);
+    }
+
+    .category-item.active i {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Product Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Skeleton Loader */
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    .skeleton {
+      animation: shimmer 2s infinite linear;
+      background: linear-gradient(to right, #f1f5f9 4%, #e2e8f0 25%, #f1f5f9 36%);
+      background-size: 1000px 100%;
+    }
+    
+    .skeleton-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      background: var(--bg-card);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+    
+    .skeleton-img {
+      height: 220px;
+      width: 100%;
+    }
+    
+    .skeleton-content {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 1rem;
+    }
+    
+    .skeleton-title {
+      height: 24px;
+      width: 70%;
+      border-radius: 4px;
+    }
+    
+    .skeleton-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .skeleton-price {
+      height: 28px;
+      width: 40%;
+      border-radius: 4px;
+    }
+    
+    .skeleton-badge {
+      height: 20px;
+      width: 30%;
+      border-radius: 99px;
+    }
+    
+    .skeleton-desc {
+      height: 40px;
+      width: 100%;
+      border-radius: 4px;
+    }
+    
+    .skeleton-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+    
+    .skeleton-btn {
+      height: 40px;
+      border-radius: var(--radius-md);
+    }
+
+    /* Product Card */
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(30, 58, 138, 0.13);
+      border-color: var(--primary);
+    }
+
+    .product-image-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+      width: calc(100% + 3rem);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: #1e3a8a;
+      color: #ffffff;
+      padding: 0.3rem 0.8rem;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .product-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      margin: 0 0 0.5rem 0;
+      color: var(--text-main);
+    }
+
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 1.5rem 0;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+    .shop-main {
+      background: var(--bg-card);
+      padding: 2.5rem;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    @media (max-width: 768px) {
+      .shop-main {
+        padding: 1.5rem;
+      }
+    }
+    /* Cookie Banner Styles */
+    .cookie-banner {
+      position: fixed;
+      bottom: -100%;
+      left: 1rem;
+      right: 1rem;
+      z-index: 9999;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 1.25rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
+      border: 1px solid rgba(30, 58, 138, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cookie-banner.show {
+      bottom: 1rem;
+    }
+
+    .cookie-content {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .cookie-icon {
+      font-size: 1.5rem;
+      color: var(--primary, #1e3a8a);
+      background: rgba(30, 58, 138, 0.08);
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+
+    .cookie-banner:hover .cookie-icon {
+      transform: rotate(15deg);
+    }
+
+    .cookie-text h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-dark, #0f172a);
+    }
+
+    .cookie-text p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: var(--text-muted, #4b5563);
+      line-height: 1.5;
+    }
+
+    .cookie-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .cookie-banner .btn-decline {
+      padding: 0.6rem 1.2rem;
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 10px;
+      cursor: pointer;
+      background: transparent;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-main, #1e293b);
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+    }
+    
+    .cookie-banner .btn-decline:hover {
+      background: var(--bg-alt, #f1f5f9);
+      border-color: #cbd5e1;
+    }
+    
+    .cookie-banner .btn-accept {
+      padding: 0.6rem 1.2rem;
+      background: var(--primary, #1e3a8a);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
+      text-align: center;
+    }
+    
+    .cookie-banner .btn-accept:hover {
+      background: var(--primary-light, #3b82f6);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(30, 58, 138, 0.25);
+    }
+
+    @media (min-width: 768px) {
+      .cookie-banner {
+        left: auto;
+        right: 2rem;
+        width: 400px;
+        padding: 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 1px 5px rgba(0, 0, 0, 0.03);
+      }
+      .cookie-banner.show {
+        bottom: 2rem;
+      }
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .cookie-banner {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 1px 5px rgba(0, 0, 0, 0.1);
+      }
+      .cookie-icon {
+        color: #3b82f6;
+        background: rgba(59, 130, 246, 0.1);
+      }
+      .cookie-text h4 {
+        color: #f8fafc;
+      }
+      .cookie-text p {
+        color: #94a3b8;
+      }
+      .cookie-banner .btn-decline {
+        color: #f8fafc;
+        border-color: rgba(255, 255, 255, 0.15);
+      }
+      .cookie-banner .btn-decline:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .cookie-banner .btn-accept {
+        background: var(--secondary, #0ea5e9);
+        color: white;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      }
+      .cookie-banner .btn-accept:hover {
+        background: #1e3a8a;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+      }
+    }
+
+    /* Floating Wishlist Button on Product Card */
+    .wishlist-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #9ca3af;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .wishlist-btn:hover {
+      transform: scale(1.1);
+      background: #ffffff;
+      color: #ef4444;
+    }
+    
+    .wishlist-btn.active {
+      color: #ef4444;
+      background: #ffffff;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+    }
+    
+    .wishlist-btn i {
+      transition: transform 0.2s ease;
+      font-size: 1.05rem;
+    }
+    
+    .wishlist-btn:active i {
+      transform: scale(0.8);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="layout"></div>
+
+  <main class="container">
+    <div class="shop-header">
+      <div class="shop-header-content">
+        <h1>Beverage Catalog</h1>
+        <p>Pure spring water, carbonated soft drinks, and energy drinks delivered straight to your door.</p>
+      </div>
+    </div>
+
+      <!-- Sticky Mobile Actions Bar (Shown only on Mobile/Tablet) -->
+      <div class="mobile-controls-wrapper">
+        <div class="mobile-controls-bar">
+          <div class="mobile-search-compact">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="mobile-search" placeholder="Search beverages...">
+          </div>
+          <button class="btn-filter-trigger" id="openFiltersBtn">
+            <i class="fa-solid fa-sliders"></i>
+            <span>Filter</span>
+            <span class="active-filter-badge" id="filterBadge"></span>
+          </button>
+        </div>
+        
+        <div class="mobile-category-slider-wrapper">
+          <div class="mobile-category-slider" id="mobile-category-slider">
+            <!-- Dynamically populated categories -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay backdrop -->
+      <div class="shop-sidebar-overlay" id="sidebarOverlay"></div>
+
+      <div class="shop-layout">
+        <!-- Standard E-commerce Sidebar Filter -->
+        <aside class="shop-sidebar" id="shopSidebar">
+          <!-- Desktop Filter Header -->
+          <div class="sidebar-desktop-header">
+            <strong style="font-size: 1.1rem;"><i class="fa-solid fa-sliders" style="color: var(--primary); margin-right: 0.5rem;"></i> Filters</strong>
+          </div>
+
+          <!-- Mobile Filter Header -->
+          <div class="sidebar-mobile-header">
+            <h3><i class="fa-solid fa-sliders"></i> Filter Options</h3>
+            <button class="sidebar-clear-btn" id="clearAllFiltersBtn">Clear All</button>
+            <button class="sidebar-close-btn" id="closeFiltersBtn"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="filter-section">
+            <h3 class="filter-title">Search</h3>
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-search"></i>
+              <input type="text" id="search" placeholder="E.g. water, cola...">
+            </div>
+          </div>
+
+          <div class="filter-section">
+            <h3 class="filter-title">Categories</h3>
+            <div id="category-list" class="category-list">
+              <div class="category-item active" data-cat="">
+                <i class="fa-solid fa-chevron-right"></i> All Categories
+              </div>
+              <!-- Dynamic categories inject here -->
+            </div>
+          </div>
+
+          <button id="applyFiltersBtn" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+            Apply Filters
+          </button>
+        </aside>
+
+        <!-- Main Product Grid -->
+        <section class="shop-main">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.5rem; margin: 0; font-family: 'Playfair Display', serif;" id="results-count">All
+              Products</h2>
+          </div>
+
+          <div id="products" class="products-grid">
+            <!-- Products will be loaded here -->
+            ${Array(6).fill().map(() => `
+              <article class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton-content">
+                  <div class="skeleton skeleton-title"></div>
+                  <div class="skeleton-price-row">
+                    <div class="skeleton skeleton-price"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                  </div>
+                  <div class="skeleton skeleton-desc"></div>
+                  <div class="skeleton-actions">
+                    <div class="skeleton skeleton-btn" style="flex: 2;"></div>
+                    <div class="skeleton skeleton-btn" style="flex: 1;"></div>
+                  </div>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        </section>
+      </div>
+  </main>
+
+  <script src="../assets/js/api-client.js"></script>
+  <script src="../assets/js/layout.js"></script>
+  <script>
+    mountLayout();
+
+    let activeCategory = '';
+
+    // Active filters badge update
+    function updateFilterBadge() {
+      const badge = document.getElementById('filterBadge');
+      if (!badge) return;
+
+      const searchVal = document.getElementById('search').value.trim();
+      let count = 0;
+      if (activeCategory) count++;
+      if (searchVal) count++;
+
+      if (count > 0) {
+        badge.textContent = count;
+        badge.classList.add('show');
+      } else {
+        badge.textContent = '';
+        badge.classList.remove('show');
+      }
+    }
+
+    async function loadCats() {
+      try {
+        const cats = await api("categories.list");
+        const categoryList = document.getElementById('category-list');
+        const mobileSlider = document.getElementById('mobile-category-slider');
+
+        let desktopHtml = `
+          <div class="category-item active" data-cat="">
+            <i class="fa-solid fa-chevron-right"></i> All Categories
+          </div>
+        `;
+
+        let mobileHtml = `
+          <button class="mobile-cat-pill active" data-cat="">
+            All
+          </button>
+        `;
+
+        cats.forEach(c => {
+          desktopHtml += `
+            <div class="category-item" data-cat="${c.name}">
+              <i class="fa-solid fa-chevron-right"></i> ${c.name}
+            </div>
+          `;
+          mobileHtml += `
+            <button class="mobile-cat-pill" data-cat="${c.name}">
+              ${c.name}
+            </button>
+          `;
+        });
+
+        categoryList.innerHTML = desktopHtml;
+        if (mobileSlider) {
+          mobileSlider.innerHTML = mobileHtml;
+        }
+
+        // Sync visual states for both categories
+        const syncCategories = (selectedCat) => {
+          activeCategory = selectedCat;
+
+          // Sync sidebar list
+          document.querySelectorAll('.category-item').forEach(item => {
+            if (item.getAttribute('data-cat') === selectedCat) {
+              item.classList.add('active');
+            } else {
+              item.classList.remove('active');
+            }
+          });
+
+          // Sync mobile pill slider
+          document.querySelectorAll('.mobile-cat-pill').forEach(pill => {
+            if (pill.getAttribute('data-cat') === selectedCat) {
+              pill.classList.add('active');
+              // Smooth scroll category pill into center view
+              pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else {
+              pill.classList.remove('active');
+            }
+          });
+
+          load();
+        };
+
+        // Add desktop category click listeners
+        document.querySelectorAll('.category-item').forEach(item => {
+          item.addEventListener('click', function () {
+            syncCategories(this.getAttribute('data-cat'));
+          });
+        });
+
+        // Add mobile category click listeners
+        document.querySelectorAll('.mobile-cat-pill').forEach(pill => {
+          pill.addEventListener('click', function () {
+            syncCategories(this.getAttribute('data-cat'));
+          });
+        });
+
+      } catch (err) {
+        console.error("Failed to load categories", err);
+      }
+    }
+
+    // Reset all filters in both views
+    function resetAllFilters() {
+      const searchInput = document.getElementById('search');
+      const mobileSearchInput = document.getElementById('mobile-search');
+      
+      if (searchInput) searchInput.value = '';
+      if (mobileSearchInput) mobileSearchInput.value = '';
+      activeCategory = '';
+
+      // Reset category active classes
+      document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+      const defaultCat = document.querySelector('.category-item[data-cat=""]');
+      if (defaultCat) defaultCat.classList.add('active');
+
+      document.querySelectorAll('.mobile-cat-pill').forEach(i => i.classList.remove('active'));
+      const defaultPill = document.querySelector('.mobile-cat-pill[data-cat=""]');
+      if (defaultPill) defaultPill.classList.add('active');
+
+      load();
+    }
+
+    async function load() {
+      const productContainer = document.getElementById('products');
+      const countLabel = document.getElementById('results-count');
+      const searchVal = document.getElementById('search').value.trim();
+
+      let routeStr = 'products.list';
+      if (searchVal) routeStr += `&search=${encodeURIComponent(searchVal)}`;
+      if (activeCategory) routeStr += `&category=${encodeURIComponent(activeCategory)}`;
+
+      productContainer.innerHTML = Array(6).fill().map(() => `
+        <article class="skeleton-card">
+          <div class="skeleton skeleton-img"></div>
+          <div class="skeleton-content">
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton-price-row">
+              <div class="skeleton skeleton-price"></div>
+              <div class="skeleton skeleton-badge"></div>
+            </div>
+            <div class="skeleton skeleton-desc"></div>
+            <div class="skeleton-actions">
+              <div class="skeleton skeleton-btn" style="flex: 2;"></div>
+              <div class="skeleton skeleton-btn" style="flex: 1;"></div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+
+      let wishlistedIds = new Set();
+      try {
+        const wishItems = await api("wishlist.list");
+        if (wishItems && Array.isArray(wishItems)) {
+          wishItems.forEach(item => {
+            const pId = item.product_id || item.id;
+            if (pId) wishlistedIds.add(Number(pId));
+          });
+        }
+      } catch (_) {}
+
+      try {
+        const rows = await api(routeStr);
+
+        countLabel.textContent = activeCategory ? activeCategory : (searchVal ? `Search Results` : `All Products`);
+
+        if (rows.length === 0) {
+          productContainer.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px dashed var(--border-color);">
+              <i class="fa-solid fa-basket-shopping" style="font-size: 4rem; color: var(--border-color); margin-bottom: 1rem;"></i>
+              <h3 style="font-family: 'Playfair Display', serif; font-size: 1.5rem;">No products found</h3>
+              <p style="color: var(--text-muted);">We couldn't find anything matching your current filters.</p>
+              <button class="btn secondary" onclick="resetAllFilters()" style="margin-top: 1rem;">Clear Filters</button>
+            </div>
+          `;
+          return;
+        }
+
+        productContainer.innerHTML = rows.map(p => `
+          <article class="card product-card track-behavior" data-category="${p.category}">
+            <div class="product-image-container">
+              <img src="${getProductImageUrl(p.image_url)}" class="product-image" alt="${p.name}">
+              <span class="product-badge">${p.category}</span>
+              <button class="wishlist-btn ${wishlistedIds.has(Number(p.id)) ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event)" title="Save to wishlist">
+                <i class="fa-solid fa-heart"></i>
+              </button>
+            </div>
+            <div style="padding: 0 0.5rem; display: flex; flex-direction: column; flex-grow: 1;">
+              <h3 class="product-title">${p.name}</h3>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <p class="product-price" style="margin: 0;">₦${Number(p.price).toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                <div style="font-size: 0.75rem; font-weight: 600;">
+                  ${Number(p.stock) <= 0
+            ? '<span style="color: #ef4444; background: rgba(239,68,68,0.1); padding: 0.2rem 0.5rem; border-radius: 99px;"><i class="fa-solid fa-circle-xmark"></i> Out of Stock</span>'
+            : (Number(p.stock) <= 10
+              ? `<span style="color: #f59e0b; background: rgba(245,158,11,0.1); padding: 0.2rem 0.5rem; border-radius: 99px;"><i class="fa-solid fa-clock"></i> Only ${p.stock} left</span>`
+              : '<span style="color: #10b981; background: rgba(16,185,129,0.1); padding: 0.2rem 0.5rem; border-radius: 99px;"><i class="fa-solid fa-check-circle"></i> In Stock</span>')
+          }
+                </div>
+              </div>
+              <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.5rem;">
+                ${p.description || 'Premium cold beverages, pure water, and carbonated soft drinks.'}
+              </p>
+              <div class="product-actions" style="margin-top: auto; padding-bottom: 0.5rem;">
+                <button class="btn btn-primary" style="flex: 2; transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(30,58,138,0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';" onclick="addToCart(${p.id}, event)">
+                  <i class="fa-solid fa-cart-plus"></i> Add
+                </button>
+                <button onclick="window.location='./product-details.html?id=${p.id}'" style="flex: 1; padding: 0.6rem 0.5rem; background: var(--bg-alt); border: 1px solid var(--border-color); border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.4rem; color: var(--text-main); font-family: 'Inter', sans-serif; font-size: 0.875rem; transition: all 0.2s;" onmouseover="this.style.background='var(--border-color)'; this.style.color='var(--primary)';" onmouseout="this.style.background='var(--bg-alt)'; this.style.color='var(--text-main)';">
+                  <i class="fa-solid fa-eye" style="font-size: 0.95rem;"></i> View
+                </button>
+              </div>
+            </div>
+          </article>
+        `).join('');
+        
+        // Re-initialize tracking for newly added products
+        if (typeof initBehaviorTracking === 'function') {
+          initBehaviorTracking();
+        }
+      } catch (err) {
+        productContainer.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 4rem 1rem;">
+            <i class="fa-solid fa-circle-exclamation" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i>
+            <h3 style="color: #ef4444;">Error loading products</h3>
+            <p style="color: var(--text-muted);">${err.message || 'Please try again or contact support.'}</p>
+          </div>
+        `;
+      } finally {
+        updateFilterBadge();
+      }
+    }
+
+    async function addToCart(id, event) {
+      try {
+        await api("cart.add", "POST", { product_id: Number(id), quantity: 1 });
+        const btn = event ? event.currentTarget : null;
+        if (btn) {
+          const originalText = btn.innerHTML;
+          btn.innerHTML = `<i class="fa-solid fa-check"></i> Added!`;
+          btn.style.background = "#1e3a8a";
+          btn.style.borderColor = "#1e3a8a";
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = "";
+            btn.style.borderColor = "";
+          }, 2000);
+        }
+        toast("Product added to cart!", "success");
+        if (window.updateCartBadge) window.updateCartBadge();
+      } catch (e) {
+        if (e.message.includes("Not logged in") || e.message.includes("Forbidden") || e.message.includes("Authentication required")) {
+          toast("Please login to add items to your cart.", "warning");
+          setTimeout(() => window.location.href = './login.html', 1500);
+        } else {
+          toast(`Failed to add: ${e.message}`, "error");
+        }
+      }
+    }
+
+    async function toggleWishlist(id, event) {
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      
+      const btn = event ? event.currentTarget : null;
+      if (!btn) return;
+      
+      const isActive = btn.classList.contains('active');
+      
+      try {
+        if (isActive) {
+          await api("wishlist.remove", "POST", { product_id: Number(id) });
+          btn.classList.remove('active');
+          toast("Item removed from wishlist.", "info");
+        } else {
+          await api("wishlist.add", "POST", { product_id: Number(id) });
+          btn.classList.add('active');
+          toast("Item added to wishlist!", "success");
+        }
+      } catch (e) {
+        if (e.message.includes("Not logged in") || e.message.includes("Forbidden") || e.message.includes("Authentication required")) {
+          toast("Please login to save items to your wishlist.", "warning");
+          setTimeout(() => window.location.href = './login.html', 1500);
+        } else {
+          toast(`Action failed: ${e.message}`, "error");
+        }
+      }
+    }
+
+    // Bind event triggers
+    document.getElementById('applyFiltersBtn').onclick = () => { load(); closeFilters(); };
+    document.getElementById('search').onkeyup = (e) => { if (e.key === 'Enter') { load(); closeFilters(); } };
+
+    // Sync desktop and mobile search inputs in real-time
+    const searchInput = document.getElementById('search');
+    const mobileSearchInput = document.getElementById('mobile-search');
+
+    if (searchInput && mobileSearchInput) {
+      searchInput.addEventListener('input', (e) => {
+        mobileSearchInput.value = e.target.value;
+        updateFilterBadge();
+      });
+
+      mobileSearchInput.addEventListener('input', (e) => {
+        searchInput.value = e.target.value;
+        updateFilterBadge();
+      });
+
+      mobileSearchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          load();
+        }
+      });
+    }
+
+    // Clear filters triggers
+    const clearAllFiltersBtn = document.getElementById('clearAllFiltersBtn');
+    if (clearAllFiltersBtn) {
+      clearAllFiltersBtn.onclick = () => {
+        resetAllFilters();
+        closeFilters();
+      };
+    }
+
+    // Mobile filter drawer drawer logic
+    const sidebar = document.getElementById('shopSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    function openFilters() {
+      sidebar.classList.add('is-open');
+      overlay.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeFilters() {
+      sidebar.classList.remove('is-open');
+      overlay.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('openFiltersBtn').onclick = openFilters;
+    document.getElementById('closeFiltersBtn').onclick = closeFilters;
+    overlay.onclick = closeFilters;
+
+    loadCats().then(load);
+  </script>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookieConsent" class="cookie-banner">
+    <div class="cookie-content">
+      <div class="cookie-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+      <div class="cookie-text">
+        <h4>We Value Your Privacy</h4>
+        <p>We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.</p>
+      </div>
+    </div>
+    <div class="cookie-actions">
+      <button id="declineCookies" class="btn-decline">Decline</button>
+      <button id="acceptCookies" class="btn-accept">Accept All</button>
+    </div>
+  </div>
+
+  <script>
+    const cookieBanner = document.getElementById('cookieConsent');
+    const acceptBtn = document.getElementById('acceptCookies');
+    const declineBtn = document.getElementById('declineCookies');
+
+    const initCookieBanner = () => {
+      if (!localStorage.getItem('mth_cookie_consent')) {
+        setTimeout(() => cookieBanner.classList.add('show'), 1500);
+      }
+    };
+
+    const handleCookieConsent = (consent) => {
+      localStorage.setItem('mth_cookie_consent', consent);
+      cookieBanner.classList.remove('show');
+      if(consent === 'accepted') {
+        if (typeof initBehaviorTracking === 'function') initBehaviorTracking();
+      } else {
+        localStorage.removeItem('mth_user_prefs');
+      }
+    };
+
+    const initBehaviorTracking = () => {
+      if (localStorage.getItem('mth_cookie_consent') !== 'accepted') return;
+      document.querySelectorAll('.track-behavior').forEach(el => {
+        if (el.dataset.trackingInitialized) return;
+        el.dataset.trackingInitialized = true;
+        el.addEventListener('click', () => {
+          const category = el.getAttribute('data-category');
+          if (category) {
+            let userPrefs = JSON.parse(localStorage.getItem('mth_user_prefs') || '{}');
+            const normalizedCat = category.toLowerCase();
+            userPrefs[normalizedCat] = (userPrefs[normalizedCat] || 0) + 1;
+            localStorage.setItem('mth_user_prefs', JSON.stringify(userPrefs));
+          }
+        });
+      });
+    };
+
+    if (acceptBtn && declineBtn) {
+      acceptBtn.addEventListener('click', () => handleCookieConsent('accepted'));
+      declineBtn.addEventListener('click', () => handleCookieConsent('declined'));
+      window.addEventListener('load', () => {
+        initCookieBanner();
+        if (localStorage.getItem('mth_cookie_consent') === 'accepted') {
+          initBehaviorTracking();
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

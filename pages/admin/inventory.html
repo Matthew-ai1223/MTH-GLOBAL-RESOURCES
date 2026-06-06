@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory | MTH GLOBAL RESOURCES Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .header-banner { background: linear-gradient(135deg,var(--bg-card),var(--bg-alt)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; border:1px solid var(--border-color); display:flex; align-items:center; gap:1.5rem; }
+    .header-icon { background:rgba(245,158,11,0.1); color:#b45309; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--bg-card); border-radius:var(--radius-lg); padding:2rem; width:90%; max-width:480px; box-shadow:var(--shadow-lg); }
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:.875rem; font-weight:600; margin-bottom:.4rem; }
+    .form-group input, .form-group select { width:100%; padding:.7rem 1rem; border:1px solid var(--border-color); border-radius:var(--radius-md); font-family:'Inter',sans-serif; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div class="header-icon"><i class="fa-solid fa-warehouse"></i></div>
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;">Inventory Management</h1>
+        <p style="margin:.5rem 0 0;color:var(--text-muted);">Track warehouse supplies and beverage stock levels.</p>
+      </div>
+    </div>
+    <section class="card">
+      <div class="toolbar" style="justify-content:space-between;margin-bottom:1.5rem;">
+        <h2 style="font-size:1.25rem;margin:0;">Inventory Items</h2>
+        <button class="btn btn-primary btn-small" onclick="openModal()"><i class="fa-solid fa-plus"></i> Add Item</button>
+      </div>
+      <div id="inv-container">
+        <div style="text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3 style="margin:0;">Add Inventory Item</h3>
+        <button onclick="closeModal()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group"><label>Item Name</label><input type="text" id="f-name" placeholder="e.g. Pallets, Bottle Caps, Labels"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Category</label><input type="text" id="f-cat" placeholder="e.g. Packaging, Raw Materials"></div>
+        <div class="form-group"><label>Unit</label><input type="text" id="f-unit" placeholder="e.g. kg, bags, pcs"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Quantity</label><input type="number" id="f-qty" placeholder="0"></div>
+        <div class="form-group"><label>Reorder Level</label><input type="number" id="f-reorder" placeholder="0"></div>
+      </div>
+      <div style="display:flex;gap:1rem;margin-top:1rem;">
+        <button class="btn btn-primary" onclick="saveItem()" style="flex:2;">Save Item</button>
+        <button class="btn secondary" onclick="closeModal()" style="flex:1;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/admin-layout.js"></script>
+  <script>
+    mountAdminLayout();
+    authRequired().then(load);
+
+    function openModal() { document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    async function load() {
+      const container = document.getElementById('inv-container');
+      try {
+        const rows = await api("inventory.list");
+        if (!rows.length) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem;">No inventory items yet.</p>'; return; }
+        container.innerHTML = `<div class="table-responsive"><table>
+          <thead><tr><th>Name</th><th>Category</th><th>Quantity</th><th>Unit</th><th>Reorder At</th><th>Status</th></tr></thead>
+          <tbody>${rows.map(i => {
+            const low = parseFloat(i.quantity) <= parseFloat(i.reorder_level);
+            return `<tr>
+              <td><strong>${i.name}</strong></td>
+              <td>${i.category}</td>
+              <td>${i.quantity}</td>
+              <td>${i.unit}</td>
+              <td>${i.reorder_level}</td>
+              <td>${low ? '<span style="color:#b91c1c;font-weight:700;">⚠️ Reorder</span>' : '<span style="color:#047857;">✓ OK</span>'}</td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table></div>`;
+      } catch(e) { container.innerHTML = `<p style="color:red;text-align:center;">Error: ${e.message}</p>`; }
+    }
+
+    async function saveItem() {
+      const name = document.getElementById('f-name').value.trim();
+      const category = document.getElementById('f-cat').value.trim();
+      const unit = document.getElementById('f-unit').value.trim() || 'pcs';
+      const quantity = parseFloat(document.getElementById('f-qty').value) || 0;
+      const reorder_level = parseFloat(document.getElementById('f-reorder').value) || 0;
+      if (!name) { toast('Name is required.'); return; }
+      try {
+        await api("inventory.create", "POST", {name, category, unit, quantity, reorder_level});
+        closeModal(); load();
+      } catch(e) { toast("Error: " + e.message); }
+    }
+  </script>
+</body>
+</html>

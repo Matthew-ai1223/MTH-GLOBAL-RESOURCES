@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard | MTH GLOBAL RESOURCES</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .hero { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding:3rem 2rem; border-radius:var(--radius-lg); color:white; margin-bottom:2rem; position:relative; overflow:hidden; }
+    .hero h1 { font-family:'Playfair Display',serif; font-size:2rem; color:white; margin:0 0 .5rem; }
+    .hero::after { content:'\f2bd'; font-family:'Font Awesome 6 Free'; font-weight:900; position:absolute; right:2rem; top:50%; transform:translateY(-50%); font-size:8rem; opacity:.08; }
+    .stat-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1.25rem; margin-bottom:2rem; }
+    .stat-card { background:var(--bg-card); padding:1.25rem; border-radius:var(--radius-lg); border-left:4px solid var(--primary); box-shadow:var(--shadow-sm); }
+    .stat-card .val { font-size:1.75rem; font-weight:800; color:var(--primary-dark); }
+    .stat-card small { font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); }
+    .nav-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:1rem; }
+    .nav-item { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.25rem; background:var(--bg-alt); border-radius:var(--radius-md); color:var(--text-main); font-weight:600; font-size:.8rem; gap:.5rem; text-align:center; text-decoration:none; transition:var(--transition); }
+    .nav-item i { font-size:1.5rem; color:var(--primary); }
+    .nav-item:hover { background:var(--primary); color:white; }
+    .nav-item:hover i { color:white; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="hero">
+      <h1 id="greeting">Good morning! 👋</h1>
+      <p style="margin:0;opacity:.9;" id="sub-text">You have tasks assigned to you. Deliver excellence today!</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="val" id="task-count">—</div><small>My Tasks</small></div>
+      <div class="stat-card" style="border-left-color:#f59e0b;"><div class="val" id="pending-tasks" style="color:#b45309;">—</div><small>Pending</small></div>
+      <div class="stat-card" style="border-left-color:#047857;"><div class="val" id="done-tasks" style="color:#047857;">—</div><small>Completed</small></div>
+    </div>
+    <section class="card">
+      <h2 style="font-size:1.25rem;margin-bottom:1.25rem;">Quick Actions</h2>
+      <div class="nav-grid">
+        <a href="./tasks.html" class="nav-item"><i class="fa-solid fa-list-check"></i><span>My Tasks</span></a>
+        <a href="./inventory.html" class="nav-item"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a>
+      </div>
+    </section>
+  </main>
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/layout.js"></script>
+  <script src="../../assets/js/pages/common.js"></script>
+  <script>
+    mountLayout();
+    authRequired().then(async () => {
+      const hour = new Date().getHours();
+      const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+      try {
+        const me = await api("auth.me");
+        document.getElementById('greeting').textContent = `${greet}, ${me.name}! 👋`;
+      } catch(e) {}
+      try {
+        const tasks = await api("tasks.list");
+        document.getElementById('task-count').textContent = tasks.length;
+        document.getElementById('pending-tasks').textContent = tasks.filter(t => t.status !== 'Done').length;
+        document.getElementById('done-tasks').textContent = tasks.filter(t => t.status === 'Done').length;
+      } catch(e) { console.error(e); }
+    });
+  </script>
+</body>
+</html>

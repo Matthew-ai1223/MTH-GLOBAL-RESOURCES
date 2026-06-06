@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Cycles | MTH GLOBAL RESOURCES Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <style>
+    .header-banner { background: linear-gradient(135deg,var(--bg-card),var(--bg-alt)); padding:2.5rem 2rem; border-radius:var(--radius-lg); margin-bottom:2rem; border:1px solid var(--border-color); display:flex; align-items:center; gap:1.5rem; }
+    .header-icon { background:rgba(132,204,22,0.1); color:#4d7c0f; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.5rem; }
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--bg-card); border-radius:var(--radius-lg); padding:2rem; width:90%; max-width:480px; box-shadow:var(--shadow-lg); }
+    .form-group { margin-bottom:1rem; }
+    .form-group label { display:block; font-size:.875rem; font-weight:600; margin-bottom:.4rem; }
+    .form-group input, .form-group select { width:100%; padding:.7rem 1rem; border:1px solid var(--border-color); border-radius:var(--radius-md); font-family:'Inter',sans-serif; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  </style>
+</head>
+<body>
+  <div id="layout"></div>
+  <main class="container">
+    <div class="header-banner">
+      <div class="header-icon"><i class="fa-solid fa-wheat-awn"></i></div>
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;">Crop Cycles</h1>
+        <p style="margin:.5rem 0 0;color:var(--text-muted);">Track planting schedules and harvest timelines.</p>
+      </div>
+    </div>
+    <section class="card">
+      <div class="toolbar" style="justify-content:space-between;margin-bottom:1.5rem;">
+        <h2 style="font-size:1.25rem;margin:0;">All Cycles</h2>
+        <button class="btn btn-primary btn-small" onclick="openModal()"><i class="fa-solid fa-plus"></i> New Cycle</button>
+      </div>
+      <div id="crops-container">
+        <div style="text-align:center;padding:4rem;"><i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;color:var(--primary);"></i></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3 style="margin:0;">Add Crop Cycle</h3>
+        <button onclick="closeModal()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group"><label>Crop Name</label><input type="text" id="f-crop" placeholder="e.g. Maize, Tomato"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Planted On</label><input type="date" id="f-planted"></div>
+        <div class="form-group"><label>Expected Harvest</label><input type="date" id="f-harvest"></div>
+      </div>
+      <div class="form-group"><label>Status</label>
+        <select id="f-status">
+          <option>Planted</option><option>Growing</option><option>Harvested</option><option>Failed</option>
+        </select>
+      </div>
+      <div style="display:flex;gap:1rem;margin-top:1rem;">
+        <button class="btn btn-primary" onclick="saveCycle()" style="flex:2;">Save</button>
+        <button class="btn secondary" onclick="closeModal()" style="flex:1;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/api-client.js"></script>
+  <script src="../../assets/js/admin-layout.js"></script>
+  <script>
+    mountAdminLayout();
+    authRequired().then(load);
+
+    function openModal() { document.getElementById('modal').classList.add('open'); }
+    function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+    async function load() {
+      const container = document.getElementById('crops-container');
+      try {
+        const rows = await api("crops.list");
+        if (!rows.length) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem;">No crop cycles recorded yet.</p>'; return; }
+        const statusColor = { Planted:'#1d4ed8', Growing:'#4d7c0f', Harvested:'#047857', Failed:'#b91c1c' };
+        container.innerHTML = `<div class="table-responsive"><table>
+          <thead><tr><th>Crop</th><th>Planted</th><th>Expected Harvest</th><th>Status</th></tr></thead>
+          <tbody>${rows.map(r => `<tr>
+            <td><strong>${r.crop_name}</strong></td>
+            <td>${r.planted_on ? new Date(r.planted_on).toLocaleDateString() : '—'}</td>
+            <td>${r.expected_harvest_on ? new Date(r.expected_harvest_on).toLocaleDateString() : '—'}</td>
+            <td style="color:${statusColor[r.status]||'#475569'};font-weight:600;">${r.status}</td>
+          </tr>`).join('')}</tbody>
+        </table></div>`;
+      } catch(e) { container.innerHTML = `<p style="color:red;text-align:center;">Error: ${e.message}</p>`; }
+    }
+
+    async function saveCycle() {
+      const crop_name = document.getElementById('f-crop').value.trim();
+      const planted_on = document.getElementById('f-planted').value;
+      const expected_harvest_on = document.getElementById('f-harvest').value;
+      const status = document.getElementById('f-status').value;
+      if (!crop_name) { toast('Crop name is required.'); return; }
+      try {
+        await api("crops.create", "POST", {crop_name, planted_on, expected_harvest_on, status});
+        closeModal(); load();
+      } catch(e) { toast("Error: " + e.message); }
+    }
+  </script>
+</body>
+</html>
