@@ -2,22 +2,57 @@
   "users": [
     {
       "id": 1,
+      "name": "Adeniyi Olalekan",
       "email": "olalekanadeniyi081@gmail.com",
       "username": "olalekan",
       "password_hash": "$2y$10$Sy.hQ5/4F9Vh9LXHqDAtA.fv0/azBChlpy9QvK47HZC90Xb4HJyES",
       "role": "customer",
+      "phone": "08110575847",
+      "address": "Ibadan, Oyo State",
       "is_verified": 1,
       "created_at": "2026-05-15T09:00:00Z"
     },
     {
       "id": 2,
+      "name": "Administrator",
       "email": "@admin2026",
       "username": "@admin2026",
       "password_hash": "$2y$10$ZDrYuQX9CFswaqCWx9pL7ejUV.LFOkttno/m..FM2R1YYD.D3aTq6",
       "role": "admin",
+      "phone": "+2347000000001",
+      "address": "Ibadan, HQ",
       "is_verified": 1,
       "created_at": "2026-05-15T09:00:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Fatima Ibrahim",
+      "email": "fatima.ibrahim@mthglobal.com",
+      "username": "fatima",
+      "password_hash": "$2y$10$Sy.hQ5/4F9Vh9LXHqDAtA.fv0/azBChlpy9QvK47HZC90Xb4HJyES",
+      "role": "staff",
+      "phone": "08012345678",
+      "address": "Ibadan, Oyo State",
+      "is_verified": 1,
+      "created_at": "2026-05-20T10:00:00Z"
+    },
+    {
+      "id": 4,
+      "name": "Chukwuemeka Nwosu",
+      "email": "chukwuemeka@example.com",
+      "username": "emeka",
+      "password_hash": "$2y$10$Sy.hQ5/4F9Vh9LXHqDAtA.fv0/azBChlpy9QvK47HZC90Xb4HJyES",
+      "role": "customer",
+      "phone": "07034567890",
+      "address": "Lagos, Nigeria",
+      "is_verified": 1,
+      "created_at": "2026-05-22T11:00:00Z"
     }
+  ],
+  "categories": [
+    { "id": 1, "name": "Water", "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 2, "name": "Soft Drinks", "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 3, "name": "Live Stock", "created_at": "2026-05-01T00:00:00Z" }
   ],
   "products": [
     {
@@ -200,5 +235,132 @@
       "image_url": "https://images.unsplash.com/photo-1548839130-3fd2e29128fd?auto=format&fit=crop&w=600&q=80",
       "description": "Nutrient-enhanced water featuring high doses of Vitamin C, B5, B6, and B12."
     }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "customer_name": "Adeniyi Olalekan",
+      "status": "Delivered",
+      "total_amount": 9600.00,
+      "payment_status": "Paid",
+      "payment_method": "Online",
+      "created_at": "2026-05-20T10:30:00Z",
+      "items": [
+        { "product_id": 1, "name": "MTH Premium Spring Water (75cl x 12 Pack)", "quantity": 2, "unit_price": 2400.00, "image_url": "https://images.unsplash.com/photo-1608885898957-a599fb1bf88d?auto=format&fit=crop&w=600&q=80", "category": "Water" },
+        { "product_id": 5, "name": "Classic Cola Soft Drink (50cl x 12 Pack)", "quantity": 1, "unit_price": 3600.00, "image_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80", "category": "Soft Drinks" },
+        { "product_id": 6, "name": "Zesty Orange Soda (50cl x 12 Pack)", "quantity": 1, "unit_price": 1200.00, "image_url": "https://images.unsplash.com/photo-1567103472667-6898f3a83cf2?auto=format&fit=crop&w=600&q=80", "category": "Soft Drinks" }
+      ]
+    },
+    {
+      "id": 2,
+      "user_id": 4,
+      "customer_name": "Chukwuemeka Nwosu",
+      "status": "Shipped",
+      "total_amount": 7200.00,
+      "payment_status": "Paid",
+      "payment_method": "Online",
+      "created_at": "2026-05-22T14:00:00Z",
+      "items": [
+        { "product_id": 3, "name": "Sparkling Mineral Water (50cl x 12 Glass Bottles)", "quantity": 1, "unit_price": 4500.00, "image_url": "https://images.unsplash.com/photo-1559839914-17aae19cec71?auto=format&fit=crop&w=600&q=80", "category": "Water" },
+        { "product_id": 9, "name": "Pineapple Sparkle Soda (50cl x 12 Pack)", "quantity": 1, "unit_price": 3600.00, "image_url": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80", "category": "Soft Drinks" }
+      ]
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "customer_name": "Adeniyi Olalekan",
+      "status": "Pending",
+      "total_amount": 4800.00,
+      "payment_status": "Pending",
+      "payment_method": "Online",
+      "created_at": "2026-06-01T08:15:00Z",
+      "items": [
+        { "product_id": 20, "name": "Vitamin Enhanced Water (50cl x 12 Pack)", "quantity": 1, "unit_price": 4800.00, "image_url": "https://images.unsplash.com/photo-1548839130-3fd2e29128fd?auto=format&fit=crop&w=600&q=80", "category": "Water" }
+      ]
+    },
+    {
+      "id": 4,
+      "user_id": 4,
+      "customer_name": "Chukwuemeka Nwosu",
+      "status": "Paid",
+      "total_amount": 19200.00,
+      "payment_status": "Paid",
+      "payment_method": "Online",
+      "created_at": "2026-06-03T16:45:00Z",
+      "items": [
+        { "product_id": 13, "name": "MTH Power Energy Drink (25cl Can x 24 Pack)", "quantity": 2, "unit_price": 9600.00, "image_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80", "category": "Soft Drinks" }
+      ]
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "customer_name": "Adeniyi Olalekan",
+      "status": "Delivered",
+      "total_amount": 14400.00,
+      "payment_status": "Paid",
+      "payment_method": "Online",
+      "created_at": "2026-06-05T09:00:00Z",
+      "items": [
+        { "product_id": 4, "name": "MTH Purified Dispenser Bottle (20 Liters)", "quantity": 4, "unit_price": 1200.00, "image_url": "https://images.unsplash.com/photo-1548839130-3fd2e29128fd?auto=format&fit=crop&w=600&q=80", "category": "Water" },
+        { "product_id": 10, "name": "Premium Tonic Water (35cl Can x 24 Pack)", "quantity": 1, "unit_price": 7500.00, "image_url": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80", "category": "Soft Drinks" },
+        { "product_id": 12, "name": "Sparkling Ginger Ale (35cl Can x 12 Pack)", "quantity": 1, "unit_price": 2100.00, "image_url": "https://images.unsplash.com/photo-1527960656366-ee2a999e32e6?auto=format&fit=crop&w=600&q=80", "category": "Soft Drinks" }
+      ]
+    }
+  ],
+  "inventory_items": [
+    { "id": 1, "name": "Spring Water Bottles (75cl)", "category": "Packaging", "quantity": 5000.00, "unit": "units", "reorder_level": 500.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 2, "name": "PET Bottle Caps", "category": "Packaging", "quantity": 8000.00, "unit": "units", "reorder_level": 1000.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 3, "name": "Shrink Wrap Film", "category": "Packaging", "quantity": 200.00, "unit": "rolls", "reorder_level": 50.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 4, "name": "Carbon Dioxide (CO2)", "category": "Raw Material", "quantity": 120.00, "unit": "kg", "reorder_level": 30.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 5, "name": "Purified Water (Bulk)", "category": "Raw Material", "quantity": 15000.00, "unit": "liters", "reorder_level": 5000.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 6, "name": "Carton Boxes (12-pack)", "category": "Packaging", "quantity": 300.00, "unit": "units", "reorder_level": 100.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 7, "name": "Glass Bottles (50cl)", "category": "Packaging", "quantity": 400.00, "unit": "units", "reorder_level": 200.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 8, "name": "Aluminium Cans (35cl)", "category": "Packaging", "quantity": 250.00, "unit": "units", "reorder_level": 300.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 9, "name": "Sugar (Refined)", "category": "Raw Material", "quantity": 800.00, "unit": "kg", "reorder_level": 200.00, "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 10, "name": "Flavour Concentrates (Cola)", "category": "Raw Material", "quantity": 45.00, "unit": "liters", "reorder_level": 20.00, "created_at": "2026-05-01T00:00:00Z" }
+  ],
+  "livestock": [
+    { "id": 1, "animal_type": "Goat", "quantity": 20, "age_stage": "Adult", "health_status": "Healthy", "note": "Saanen dairy goats, in good condition.", "created_at": "2026-05-01T00:00:00Z" },
+    { "id": 2, "animal_type": "Broiler Chicken", "quantity": 500, "age_stage": "4 Weeks", "health_status": "Healthy", "note": "Growing well, vaccination done.", "created_at": "2026-05-10T00:00:00Z" },
+    { "id": 3, "animal_type": "Cattle (Bull)", "quantity": 5, "age_stage": "Adult", "health_status": "Under Observation", "note": "One bull showing mild fever symptoms.", "created_at": "2026-04-15T00:00:00Z" },
+    { "id": 4, "animal_type": "Pig", "quantity": 30, "age_stage": "Mixed", "health_status": "Healthy", "note": "Farrow-to-finish operation, next batch due in 3 weeks.", "created_at": "2026-05-05T00:00:00Z" }
+  ],
+  "crop_cycles": [
+    { "id": 1, "crop_name": "Maize", "planted_on": "2026-04-01", "expected_harvest_on": "2026-07-01", "harvested_on": null, "yield_qty": null, "yield_unit": "bags", "status": "Growing", "created_at": "2026-04-01T00:00:00Z" },
+    { "id": 2, "crop_name": "Cassava", "planted_on": "2026-03-15", "expected_harvest_on": "2026-12-15", "harvested_on": null, "yield_qty": null, "yield_unit": "tubers", "status": "Growing", "created_at": "2026-03-15T00:00:00Z" },
+    { "id": 3, "crop_name": "Tomato", "planted_on": "2026-01-10", "expected_harvest_on": "2026-04-10", "harvested_on": "2026-04-08", "yield_qty": 1200.00, "yield_unit": "kg", "status": "Harvested", "created_at": "2026-01-10T00:00:00Z" },
+    { "id": 4, "crop_name": "Pepper (Tatashe)", "planted_on": "2026-05-01", "expected_harvest_on": "2026-08-01", "harvested_on": null, "yield_qty": null, "yield_unit": "kg", "status": "Planted", "created_at": "2026-05-01T00:00:00Z" }
+  ],
+  "farm_tasks": [
+    { "id": 1, "title": "Vaccinate Broiler Flock", "description": "Administer Newcastle Disease vaccine to all broilers.", "priority": "High", "status": "Done", "due_date": "2026-05-20", "created_by": 2, "created_at": "2026-05-15T00:00:00Z" },
+    { "id": 2, "title": "Water Tank Maintenance", "description": "Clean and descale the 5 main water storage tanks.", "priority": "Medium", "status": "In Progress", "due_date": "2026-06-10", "created_by": 2, "created_at": "2026-06-01T00:00:00Z" },
+    { "id": 3, "title": "Fertilize Maize Field", "description": "Apply NPK fertilizer to maize crop (Block A).", "priority": "High", "status": "Todo", "due_date": "2026-06-08", "created_by": 2, "created_at": "2026-06-01T00:00:00Z" },
+    { "id": 4, "title": "Inventory Audit Q2", "description": "Count and reconcile all packaging materials in the warehouse.", "priority": "Medium", "status": "Todo", "due_date": "2026-06-15", "created_by": 2, "created_at": "2026-06-02T00:00:00Z" },
+    { "id": 5, "title": "Feed Cattle (Morning Rounds)", "description": "Daily morning feeding and health check for the cattle pen.", "priority": "High", "status": "In Progress", "due_date": "2026-06-06", "created_by": 2, "created_at": "2026-06-06T00:00:00Z" },
+    { "id": 6, "title": "Restock CO2 Cylinders", "description": "Place order for 50kg CO2 cylinders from supplier.", "priority": "Low", "status": "Todo", "due_date": "2026-06-20", "created_by": 2, "created_at": "2026-06-03T00:00:00Z" }
+  ],
+  "expenses": [
+    { "id": 1, "title": "Animal Feed Purchase", "amount": 85000.00, "expense_date": "2026-05-05", "category": "Farm Supplies", "note": "50 bags of broiler starter feed.", "created_at": "2026-05-05T00:00:00Z" },
+    { "id": 2, "title": "Packaging Materials Restock", "amount": 42000.00, "expense_date": "2026-05-10", "category": "Production", "note": "PET bottles, caps and shrink wrap.", "created_at": "2026-05-10T00:00:00Z" },
+    { "id": 3, "title": "Electricity Bill (Production Plant)", "amount": 28500.00, "expense_date": "2026-05-15", "category": "Utilities", "note": "May electricity tariff for plant.", "created_at": "2026-05-15T00:00:00Z" },
+    { "id": 4, "title": "Vehicle Fuel & Maintenance", "amount": 15000.00, "expense_date": "2026-05-20", "category": "Logistics", "note": "Fuel for delivery trucks, oil change.", "created_at": "2026-05-20T00:00:00Z" },
+    { "id": 5, "title": "Staff Salaries (May)", "amount": 250000.00, "expense_date": "2026-05-31", "category": "Payroll", "note": "Salaries for 8 production staff.", "created_at": "2026-05-31T00:00:00Z" },
+    { "id": 6, "title": "Veterinary Services", "amount": 18000.00, "expense_date": "2026-06-02", "category": "Farm Supplies", "note": "Vaccination and general checkup for livestock.", "created_at": "2026-06-02T00:00:00Z" }
+  ],
+  "income_entries": [
+    { "id": 1, "title": "Wholesale Order - Adebayo Stores", "amount": 320000.00, "income_date": "2026-05-12", "source": "Wholesale", "note": "Mixed water and soft drinks bulk order.", "created_at": "2026-05-12T00:00:00Z" },
+    { "id": 2, "title": "Online Shop Sales (Week 1 May)", "amount": 95400.00, "income_date": "2026-05-07", "source": "E-Commerce", "note": "Aggregated online order payments for week.", "created_at": "2026-05-07T00:00:00Z" },
+    { "id": 3, "title": "Event Supply - MTH Corporate Gig", "amount": 150000.00, "income_date": "2026-05-18", "source": "Events", "note": "Water supply for 500-person corporate event.", "created_at": "2026-05-18T00:00:00Z" },
+    { "id": 4, "title": "Online Shop Sales (Week 2 May)", "amount": 112600.00, "income_date": "2026-05-14", "source": "E-Commerce", "note": "Aggregated online order payments for week.", "created_at": "2026-05-14T00:00:00Z" },
+    { "id": 5, "title": "Livestock Sales (Goats)", "amount": 180000.00, "income_date": "2026-05-25", "source": "Farm", "note": "Sale of 6 adult goats to local market.", "created_at": "2026-05-25T00:00:00Z" },
+    { "id": 6, "title": "Online Shop Sales (June Wk 1)", "amount": 55200.00, "income_date": "2026-06-05", "source": "E-Commerce", "note": "Aggregated online order payments for week.", "created_at": "2026-06-05T00:00:00Z" }
+  ],
+  "notifications": [
+    { "id": 1, "user_id": null, "title": "New Product Alert", "body": "MTH Premium Spring Water (75cl x 12 Pack) is now available in the shop!", "type": "info", "created_at": "2026-05-15T09:00:00Z" },
+    { "id": 2, "user_id": 1, "title": "Order Confirmed", "body": "Your order #1 totaling ₦9,600 has been confirmed and is being processed.", "type": "success", "created_at": "2026-05-20T10:35:00Z" },
+    { "id": 3, "user_id": null, "title": "Low Stock Warning", "body": "Aluminium Cans (35cl) inventory is below reorder level. Please restock urgently.", "type": "warning", "created_at": "2026-06-01T08:00:00Z" },
+    { "id": 4, "user_id": 1, "title": "Order Delivered", "body": "Your order #1 has been successfully delivered. Enjoy!", "type": "success", "created_at": "2026-05-22T14:00:00Z" },
+    { "id": 5, "user_id": null, "title": "System Notice", "body": "MTH GLOBAL RESOURCES platform is running in demo/fallback mode. Some write operations may be limited.", "type": "info", "created_at": "2026-06-06T00:00:00Z" }
   ]
 }

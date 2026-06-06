@@ -217,6 +217,9 @@ try {
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
+            if (!$pdo) {
+                jsonResponse(true, null, 'If this email is registered, a password reset link has been sent to it.');
+            }
             $email = strtolower(trim((string) ($body['email'] ?? '')));
             $stmt = $pdo->prepare('SELECT id, email FROM users WHERE email = ? LIMIT 1');
             $stmt->execute([$email]);
@@ -243,6 +246,9 @@ try {
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
+            if (!$pdo) {
+                jsonResponse(false, null, 'Password reset requires a database connection.', 503);
+            }
             $token = trim((string) ($body['token'] ?? ''));
             $password = (string) ($body['password'] ?? '');
             if ($token === '' || $password === '') {
@@ -268,6 +274,9 @@ try {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
             $uid = requireAuth();
+            if (!$pdo) {
+                jsonResponse(false, null, 'Profile updates require a database connection.', 503);
+            }
             $name = trim((string) ($body['name'] ?? ''));
             $phone = trim((string) ($body['phone'] ?? ''));
             $address = trim((string) ($body['address'] ?? ''));
@@ -612,41 +621,51 @@ try {
 
         case 'orders.list':
             $userId = requireAuth();
-            $stmt = $pdo->prepare('SELECT id, status, total_amount, payment_status, payment_method, created_at FROM orders WHERE user_id = ? ORDER BY id DESC');
-            $stmt->execute([$userId]);
-            jsonResponse(true, $stmt->fetchAll());
+            if ($pdo) {
+                $stmt = $pdo->prepare('SELECT id, status, total_amount, payment_status, payment_method, created_at FROM orders WHERE user_id = ? ORDER BY id DESC');
+                $stmt->execute([$userId]);
+                jsonResponse(true, $stmt->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getOrders($userId));
+            }
             break;
 
         case 'orders.details':
             $userId = requireAuth();
             $orderId = (int) ($_GET['id'] ?? 0);
-            
-            // Check if order belongs to user
-            $stmt = $pdo->prepare('SELECT id, status, total_amount, payment_status, payment_method, created_at FROM orders WHERE id = ? AND user_id = ?');
-            $stmt->execute([$orderId, $userId]);
-            $order = $stmt->fetch();
-            
-            if (!$order) {
-                jsonResponse(false, null, 'Order not found', 404);
+            if ($pdo) {
+                $stmt = $pdo->prepare('SELECT id, status, total_amount, payment_status, payment_method, created_at FROM orders WHERE id = ? AND user_id = ?');
+                $stmt->execute([$orderId, $userId]);
+                $order = $stmt->fetch();
+                if (!$order) {
+                    jsonResponse(false, null, 'Order not found', 404);
+                }
+                $itemStmt = $pdo->prepare('
+                    SELECT oi.quantity, oi.unit_price, p.id as product_id, p.name, p.image_url, p.category
+                    FROM order_items oi
+                    JOIN products p ON p.id = oi.product_id
+                    WHERE oi.order_id = ?
+                ');
+                $itemStmt->execute([$orderId]);
+                $order['items'] = $itemStmt->fetchAll();
+                jsonResponse(true, $order);
+            } else {
+                $order = JsonFallbackService::getOrderDetails($orderId);
+                if (!$order || (int) $order['user_id'] !== $userId) {
+                    jsonResponse(false, null, 'Order not found', 404);
+                }
+                jsonResponse(true, $order);
             }
-            
-            // Get items
-            $itemStmt = $pdo->prepare('
-                SELECT oi.quantity, oi.unit_price, p.id as product_id, p.name, p.image_url, p.category
-                FROM order_items oi
-                JOIN products p ON p.id = oi.product_id
-                WHERE oi.order_id = ?
-            ');
-            $itemStmt->execute([$orderId]);
-            $order['items'] = $itemStmt->fetchAll();
-            
-            jsonResponse(true, $order);
             break;
 
         case 'orders.all':
             requireRole(['admin']);
-            $rows = $pdo->query('SELECT o.id, u.name AS customer_name, o.status, o.payment_status, o.payment_method, o.total_amount, o.created_at FROM orders o JOIN users u ON u.id = o.user_id ORDER BY o.id DESC')->fetchAll();
-            jsonResponse(true, $rows);
+            if ($pdo) {
+                $rows = $pdo->query('SELECT o.id, u.name AS customer_name, o.status, o.payment_status, o.payment_method, o.total_amount, o.created_at FROM orders o JOIN users u ON u.id = o.user_id ORDER BY o.id DESC')->fetchAll();
+                jsonResponse(true, $rows);
+            } else {
+                jsonResponse(true, JsonFallbackService::getAllOrders());
+            }
             break;
 
         case 'orders.status.update':
@@ -819,13 +838,20 @@ try {
 
         case 'livestock.list':
             requireRole(['admin', 'staff']);
-            jsonResponse(true, $pdo->query('SELECT * FROM livestock ORDER BY id DESC')->fetchAll());
+            if ($pdo) {
+                jsonResponse(true, $pdo->query('SELECT * FROM livestock ORDER BY id DESC')->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getLivestock());
+            }
             break;
         case 'livestock.create':
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
             requireRole(['admin']);
+            if (!$pdo) {
+                jsonResponse(false, null, 'Adding livestock requires a database connection.', 503);
+            }
             $stmt = $pdo->prepare('INSERT INTO livestock (animal_type, quantity, age_stage, health_status, note) VALUES (?, ?, ?, ?, ?)');
             $stmt->execute([(string) ($body['animal_type'] ?? ''), (int) ($body['quantity'] ?? 0), (string) ($body['age_stage'] ?? ''), (string) ($body['health_status'] ?? ''), (string) ($body['note'] ?? '')]);
             jsonResponse(true, null, 'Livestock added');
@@ -833,13 +859,20 @@ try {
 
         case 'crops.list':
             requireRole(['admin', 'staff']);
-            jsonResponse(true, $pdo->query('SELECT * FROM crop_cycles ORDER BY id DESC')->fetchAll());
+            if ($pdo) {
+                jsonResponse(true, $pdo->query('SELECT * FROM crop_cycles ORDER BY id DESC')->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getCrops());
+            }
             break;
         case 'crops.create':
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
             requireRole(['admin']);
+            if (!$pdo) {
+                jsonResponse(false, null, 'Adding crops requires a database connection.', 503);
+            }
             $stmt = $pdo->prepare('INSERT INTO crop_cycles (crop_name, planted_on, expected_harvest_on, status) VALUES (?, ?, ?, ?)');
             $stmt->execute([(string) ($body['crop_name'] ?? ''), (string) ($body['planted_on'] ?? date('Y-m-d')), (string) ($body['expected_harvest_on'] ?? null), (string) ($body['status'] ?? 'Planted')]);
             jsonResponse(true, null, 'Crop cycle added');
@@ -847,13 +880,20 @@ try {
 
         case 'inventory.list':
             requireRole(['admin', 'staff']);
-            jsonResponse(true, $pdo->query('SELECT * FROM inventory_items ORDER BY id DESC')->fetchAll());
+            if ($pdo) {
+                jsonResponse(true, $pdo->query('SELECT * FROM inventory_items ORDER BY id DESC')->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getInventory());
+            }
             break;
         case 'inventory.create':
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
             requireRole(['admin']);
+            if (!$pdo) {
+                jsonResponse(false, null, 'Adding inventory requires a database connection.', 503);
+            }
             $stmt = $pdo->prepare('INSERT INTO inventory_items (name, category, quantity, unit, reorder_level) VALUES (?, ?, ?, ?, ?)');
             $stmt->execute([(string) ($body['name'] ?? ''), (string) ($body['category'] ?? ''), (float) ($body['quantity'] ?? 0), (string) ($body['unit'] ?? 'pcs'), (float) ($body['reorder_level'] ?? 0)]);
             jsonResponse(true, null, 'Inventory item added');
@@ -861,19 +901,26 @@ try {
 
         case 'tasks.list':
             $user = requireRole(['admin', 'staff']);
-            if ($user['role'] === 'staff') {
-                $stmt = $pdo->prepare('SELECT t.* FROM task_assignments ta JOIN farm_tasks t ON t.id = ta.task_id WHERE ta.staff_id = ? ORDER BY t.id DESC');
-                $stmt->execute([(int) $user['id']]);
+            if ($pdo) {
+                if ($user['role'] === 'staff') {
+                    $stmt = $pdo->prepare('SELECT t.* FROM task_assignments ta JOIN farm_tasks t ON t.id = ta.task_id WHERE ta.staff_id = ? ORDER BY t.id DESC');
+                    $stmt->execute([(int) $user['id']]);
+                } else {
+                    $stmt = $pdo->query('SELECT * FROM farm_tasks ORDER BY id DESC');
+                }
+                jsonResponse(true, $stmt->fetchAll());
             } else {
-                $stmt = $pdo->query('SELECT * FROM farm_tasks ORDER BY id DESC');
+                jsonResponse(true, JsonFallbackService::getTasks($user));
             }
-            jsonResponse(true, $stmt->fetchAll());
             break;
         case 'tasks.create':
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
             $admin = requireRole(['admin']);
+            if (!$pdo) {
+                jsonResponse(false, null, 'Creating tasks requires a database connection.', 503);
+            }
             $stmt = $pdo->prepare('INSERT INTO farm_tasks (title, description, priority, status, due_date, created_by) VALUES (?, ?, ?, ?, ?, ?)');
             $stmt->execute([(string) ($body['title'] ?? ''), (string) ($body['description'] ?? ''), (string) ($body['priority'] ?? 'Medium'), 'Todo', (string) ($body['due_date'] ?? null), (int) $admin['id']]);
             $taskId = (int) $pdo->lastInsertId();
@@ -885,6 +932,9 @@ try {
         case 'tasks.update.status':
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
+            }
+            if (!$pdo) {
+                jsonResponse(false, null, 'Updating tasks requires a database connection.', 503);
             }
             $taskId = (int) ($body['task_id'] ?? 0);
             $status = (string) ($body['status'] ?? 'Todo');
@@ -902,26 +952,40 @@ try {
 
         case 'finance.expenses.list':
             requireRole(['admin']);
-            jsonResponse(true, $pdo->query('SELECT * FROM expenses ORDER BY expense_date DESC, id DESC')->fetchAll());
+            if ($pdo) {
+                jsonResponse(true, $pdo->query('SELECT * FROM expenses ORDER BY expense_date DESC, id DESC')->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getExpenses());
+            }
             break;
         case 'finance.expenses.create':
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
             requireRole(['admin']);
+            if (!$pdo) {
+                jsonResponse(false, null, 'Adding expenses requires a database connection.', 503);
+            }
             $pdo->prepare('INSERT INTO expenses (title, amount, expense_date, category, note) VALUES (?, ?, ?, ?, ?)')
                 ->execute([(string) ($body['title'] ?? ''), (float) ($body['amount'] ?? 0), (string) ($body['expense_date'] ?? date('Y-m-d')), (string) ($body['category'] ?? 'General'), (string) ($body['note'] ?? '')]);
             jsonResponse(true, null, 'Expense added');
             break;
         case 'finance.income.list':
             requireRole(['admin']);
-            jsonResponse(true, $pdo->query('SELECT * FROM income_entries ORDER BY income_date DESC, id DESC')->fetchAll());
+            if ($pdo) {
+                jsonResponse(true, $pdo->query('SELECT * FROM income_entries ORDER BY income_date DESC, id DESC')->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getIncome());
+            }
             break;
         case 'finance.income.create':
             if ($method !== 'POST') {
                 jsonResponse(false, null, 'Method not allowed', 405);
             }
             requireRole(['admin']);
+            if (!$pdo) {
+                jsonResponse(false, null, 'Adding income requires a database connection.', 503);
+            }
             $pdo->prepare('INSERT INTO income_entries (title, amount, income_date, source, note) VALUES (?, ?, ?, ?, ?)')
                 ->execute([(string) ($body['title'] ?? ''), (float) ($body['amount'] ?? 0), (string) ($body['income_date'] ?? date('Y-m-d')), (string) ($body['source'] ?? 'General'), (string) ($body['note'] ?? '')]);
             jsonResponse(true, null, 'Income added');
@@ -929,7 +993,11 @@ try {
 
         case 'admin.users.list':
             requireRole(['admin']);
-            jsonResponse(true, $pdo->query('SELECT id, name, email, role, phone, address, created_at FROM users ORDER BY id DESC')->fetchAll());
+            if ($pdo) {
+                jsonResponse(true, $pdo->query('SELECT id, name, email, role, phone, address, created_at FROM users ORDER BY id DESC')->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getUsers());
+            }
             break;
 
         case 'admin.users.update':
@@ -978,22 +1046,30 @@ try {
 
         case 'reports.summary':
             requireRole(['admin']);
-            $summary = [
-                'total_users' => (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn(),
-                'total_products' => (int) $pdo->query('SELECT COUNT(*) FROM products')->fetchColumn(),
-                'total_orders' => (int) $pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn(),
-                'paid_orders' => (int) $pdo->query("SELECT COUNT(*) FROM orders WHERE payment_status = 'Paid'")->fetchColumn(),
-                'expense_total' => (float) $pdo->query('SELECT COALESCE(SUM(amount), 0) FROM expenses')->fetchColumn(),
-                'income_total' => (float) $pdo->query('SELECT COALESCE(SUM(amount), 0) FROM income_entries')->fetchColumn(),
-            ];
-            jsonResponse(true, $summary);
+            if ($pdo) {
+                $summary = [
+                    'total_users' => (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn(),
+                    'total_products' => (int) $pdo->query('SELECT COUNT(*) FROM products')->fetchColumn(),
+                    'total_orders' => (int) $pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn(),
+                    'paid_orders' => (int) $pdo->query("SELECT COUNT(*) FROM orders WHERE payment_status = 'Paid'")->fetchColumn(),
+                    'expense_total' => (float) $pdo->query('SELECT COALESCE(SUM(amount), 0) FROM expenses')->fetchColumn(),
+                    'income_total' => (float) $pdo->query('SELECT COALESCE(SUM(amount), 0) FROM income_entries')->fetchColumn(),
+                ];
+                jsonResponse(true, $summary);
+            } else {
+                jsonResponse(true, JsonFallbackService::getReportsSummary());
+            }
             break;
 
         case 'notifications.list':
             $uid = requireAuth();
-            $stmt = $pdo->prepare('SELECT id, title, body, type, created_at FROM notifications WHERE user_id = ? OR user_id IS NULL ORDER BY id DESC');
-            $stmt->execute([$uid]);
-            jsonResponse(true, $stmt->fetchAll());
+            if ($pdo) {
+                $stmt = $pdo->prepare('SELECT id, title, body, type, created_at FROM notifications WHERE user_id = ? OR user_id IS NULL ORDER BY id DESC');
+                $stmt->execute([$uid]);
+                jsonResponse(true, $stmt->fetchAll());
+            } else {
+                jsonResponse(true, JsonFallbackService::getNotifications($uid));
+            }
             break;
         case 'notifications.create':
             if ($method !== 'POST') {

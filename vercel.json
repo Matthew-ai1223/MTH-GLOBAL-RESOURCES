@@ -4,10 +4,15 @@
   "trailingSlash": false,
   "functions": {
     "api/index.php": {
-      "runtime": "vercel-php@0.7.2"
+      "runtime": "vercel-php@0.7.2",
+      "includeFiles": "backend/**,database/**"
     }
   },
   "routes": [
+    {
+      "src": "/backend/api\\.php(.*)",
+      "dest": "/api/index.php$1"
+    },
     {
       "src": "/uploads/(.*)",
       "dest": "/uploads/$1"
